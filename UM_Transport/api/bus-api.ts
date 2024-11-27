@@ -1,34 +1,38 @@
 import { BUS_INFO_API_URL } from "@/constants/api-uri-constant";
 import { BusInfo } from "@/types/bus-types";
-import { ErrorInterface } from "@/types/common-types";
+import { handleError } from "@/utils/api-utils";
 
-export const getSpecificBusInfo = async (routeName: String) => {
-  console.log(BUS_INFO_API_URL);
-  const req = await fetch(
+export const getSpecificBusInfoAPI = async (
+  routeName: string,
+  token: string
+): Promise<BusInfo> => {
+  const res = await fetch(
     `${BUS_INFO_API_URL}/getSpecific?route_name=${routeName}`,
     {
       headers: {
-        Authorization:
-          "Bearer eysJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMjAwNDg0NUBzaXN3YS51bS5lZHUubXkiLCJpYXQiOjE3MzI3MjIwNTUsImV4cCI6MTczMjcyMzg1NX0.t1Tg7C-0ekVWZSQr7X5bUARjT8O5ilT2E6hpIf6nP6iE2doGWXbmd8ULW9USyOPEKGhHRgYLtOL8ledgguIy3A",
+        Authorization: `Bearer ${token}`,
       },
     }
   );
 
-  console.log(req);
-
-  if (req.ok) {
-    const res: BusInfo = await req.json();
-    return res;
+  if (res.ok) {
+    return await res.json();
   }
 
-  if (req.status === 400) {
-    const res: ErrorInterface = await req.json();
-    throw new Error(res.message);
+  throw await handleError(res);
+};
+
+export const getAllBusInfoAPI = async (token: string): Promise<BusInfo[]> => {
+  const res = await fetch(`${BUS_INFO_API_URL}/getAll`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (res.ok) {
+    const data: { busInfoList: BusInfo[] } = await res.json();
+    return data.busInfoList;
   }
 
-  if (req.status === 401) {
-    throw new Error("Unauthorized");
-  }
-
-  throw new Error("Something went wrong");
+  throw await handleError(res);
 };
