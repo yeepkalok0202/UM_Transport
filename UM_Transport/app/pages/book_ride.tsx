@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useRouter } from 'expo-router'; 
@@ -6,7 +6,15 @@ import "nativewind";
 import '../../global.css';
 
 export default function BookRideScreen() {
+
   const router = useRouter();
+
+  const [isBooked, setIsBooked] = useState(false);
+
+  // Function to handle button click
+  const handleBookingToggle = () => {
+    setIsBooked(!isBooked); // Toggle booking state
+  };
 
   return (
     <View style={styles.container}>
@@ -54,16 +62,20 @@ export default function BookRideScreen() {
 
       {/* Fare Details Section */}
       <View style={styles.fareDetails}>
-        <View style={styles.fareRow}>
-          <Text style={styles.fareAmount}>RM5.00</Text>
-          <View style={styles.fareTimeContainer}>
-            <Image
-              source={require('@/assets/icons/clock_icon.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.fareTime}>10 mins</Text>
-          </View>
-        </View>
+        {isBooked ? (
+            <View className="flex-row items-center justify-center space-x-2">
+              <Image source={require('@/assets/icons/blue_car.png')} style={styles.icon} />
+              <Text style={styles.lookingText}>Looking for a ride...</Text>
+            </View>          
+          ) : (
+            <View style={styles.fareRow}>
+              <Text style={styles.fareAmount}>RM5.00</Text>
+              <View style={styles.fareTimeContainer}>
+                <Image source={require('@/assets/icons/clock_icon.png')} style={styles.icon} />
+                <Text style={styles.fareTime}>10 mins</Text>
+              </View>
+            </View>
+          )}
         <View style={styles.divider} />
         <View style={styles.locations}>
           <View style={styles.locationRow}>
@@ -116,8 +128,17 @@ export default function BookRideScreen() {
       </View>
 
       {/* Book Now Button */}
-      <TouchableOpacity style={styles.bookNowButton} activeOpacity={0.85} onPress={() => router.push('/pages/search_driver')}>
-        <Text style={styles.bookNowText}>Book Now</Text>
+      <TouchableOpacity
+        style={[
+          styles.bookNowButton,
+          { backgroundColor: isBooked ? '#808080' : '#4285F4' }, // Change color dynamically
+        ]}
+        activeOpacity={0.85}
+        onPress={handleBookingToggle}
+      >
+        <Text style={styles.bookNowText}>
+          {isBooked ? 'Cancel Booking' : 'Book Now'} {/* Change text dynamically */}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -185,13 +206,20 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   fareTimeContainer: {
+    width: 105,
+    height: 30,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor:'#EFF3FE',
+    borderRadius: 15 
   },
   icon: {
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
     marginRight: 8,
+    marginLeft: 8,
+    backgroundColor: '#D2E2ED',
+    borderRadius: 12 
   },
   fareTime: {
     fontSize: 16,
@@ -278,7 +306,12 @@ const styles = StyleSheet.create({
     height: 30, // Adjust size for the other payment icon
     marginLeft: 'auto', // Push the icon to the right
   },
-  
+  lookingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4285F4',
+    textAlign: 'center',
+  },
   bookNowButton: {
     position: 'absolute',
     bottom: 20, 
