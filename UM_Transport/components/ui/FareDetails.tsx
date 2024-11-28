@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { Animated, View, Text, Image, StyleSheet } from "react-native";
 
 interface FareDetailsProps {
-  isBooked: boolean;
+  isSearching: boolean;
   startLocation: {
     name: string;
     address: string;
@@ -12,106 +12,170 @@ interface FareDetailsProps {
     address: string;
   };
   fareAmount: string;
+  walletAmount: string;
   timeEstimate: string;
   paymentMethod: string;
 }
 
 const FareDetails: React.FC<FareDetailsProps> = ({
-  isBooked,
+  isSearching,
   startLocation,
   destinationLocation,
   fareAmount,
+  walletAmount,
   timeEstimate,
   paymentMethod,
 }) => {
+  const position = useRef(new Animated.Value(90)).current; // Initial bottom position
+
+  useEffect(() => {
+    // Animate to the new position when isRideStarted changes
+    Animated.timing(position, {
+      toValue: isSearching ? 40 : 90,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [isSearching]);
+
   return (
-    <View style={styles.fareDetails}>
-      {isBooked ? (
-        <View className="flex-row items-center justify-center space-x-2">
+    <Animated.View
+      style={[
+        styles.fareDetails, // Base styles
+        { bottom: position }, // Animated bottom position
+      ]}
+    >
+      {isSearching && (
+        <View style={styles.searchingContainer}>
           <Image
             source={require("@/assets/icons/blue_car.png")}
             style={styles.icon}
           />
           <Text style={styles.lookingText}>Looking for a ride...</Text>
         </View>
-      ) : (
-        <View style={styles.fareRow}>
-          <Text style={styles.fareAmount}>{fareAmount}</Text>
-          <View style={styles.fareTimeContainer}>
-            <Image
-              source={require("@/assets/icons/clock_icon.png")}
-              style={styles.icon}
-            />
-            <Text style={styles.fareTime}>{timeEstimate}</Text>
-          </View>
-        </View>
       )}
-      <View style={styles.divider} />
-      <View style={styles.locations}>
-        <View style={styles.locationRow}>
-          <Image
-            source={require("@/assets/icons/start_point_icon.png")}
-            style={styles.startIcon}
-          />
-          <View style={styles.locationTextContainer}>
-            <Text style={styles.locationName}>{startLocation.name}</Text>
-            <Text style={styles.locationAddress}>{startLocation.address}</Text>
+      <View style={[styles.container, styles.shadow]}>
+        {!isSearching && (
+          <>
+            <View style={styles.fareRow}>
+              <Text style={styles.fareAmount}>{fareAmount}</Text>
+              <View style={styles.fareTimeContainer}>
+                <Image
+                  source={require("@/assets/icons/clock_icon.png")}
+                  style={styles.icon}
+                />
+                <Text style={styles.fareTime}>{timeEstimate}</Text>
+              </View>
+            </View>
+            <View style={styles.divider} />
+          </>
+        )}
+        <View
+          style={{
+            flexDirection: "column",
+            alignSelf: "flex-start",
+          }}
+        >
+          <View style={styles.locationRow}>
+            <Image
+              source={require("@/assets/icons/start_point_icon.png")}
+              style={styles.startIcon}
+            />
+            <View style={{ flexDirection: "column" }}>
+              <Text style={styles.locationName}>{startLocation.name}</Text>
+              <Text style={styles.locationAddress}>
+                {startLocation.address}
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.dotsContainer}>
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-        </View>
-        <View style={styles.destinationLocationRow}>
-          <Image
-            source={require("@/assets/icons/end_point_icon.png")}
-            style={styles.endIcon}
-          />
-          <View style={styles.locationTextContainer}>
-            <Text style={styles.locationName}>{destinationLocation.name}</Text>
-            <Text style={styles.locationAddress}>
-              {destinationLocation.address}
-            </Text>
+          <View
+            style={{
+              marginLeft: 10,
+              marginBottom: 4,
+            }}
+          >
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+            <View style={styles.dot} />
+          </View>
+          <View style={styles.destinationLocationRow}>
+            <Image
+              source={require("@/assets/icons/end_point_icon.png")}
+              style={styles.endIcon}
+            />
+            <View style={styles.locationTextContainer}>
+              <Text style={styles.locationName}>
+                {destinationLocation.name}
+              </Text>
+              <Text style={styles.locationAddress}>
+                {destinationLocation.address}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
-      <View style={styles.divider} />
       <View style={styles.payment}>
         <Image
           source={require("@/assets/icons/payment_icon.png")}
           style={styles.paymentIcon}
         />
         <View style={styles.paymentTextContainer}>
-          <Text style={styles.paymentText}>{paymentMethod}</Text>
-          <Text style={styles.paymentAmount}>{fareAmount}</Text>
+          <Text
+            style={[
+              styles.paymentText,
+              { color: isSearching ? "black" : "#666666" },
+            ]}
+          >
+            {paymentMethod}
+          </Text>
+          {!isSearching && (
+            <Text style={styles.paymentAmount}>{walletAmount}</Text>
+          )}
         </View>
-        <Image
-          source={require("@/assets/icons/other_payment.png")}
-          style={styles.otherPaymentIcon}
-        />
+        {!isSearching ? (
+          <Image
+            source={require("@/assets/icons/other_payment.png")}
+            style={styles.paymentIcon}
+          />
+        ) : (
+          <Text style={[styles.paymentAmount, { marginRight: 16 }]}>
+            {fareAmount}
+          </Text>
+        )}
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  // Retain existing styles
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
   fareDetails: {
     position: "absolute",
-    bottom: 90,
     left: 16,
     right: 16,
-    backgroundColor: "#FFFFFF",
-    padding: 16,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    backgroundColor: "transparent",
     elevation: 5,
     zIndex: 3,
+  },
+  container: {
+    backgroundColor: "white",
+    padding: 16,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  searchingContainer: {
+    backgroundColor: "white",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 12,
   },
   fareRow: {
     flexDirection: "row",
@@ -149,9 +213,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E0E0E0",
     marginVertical: 16,
   },
-  locations: {
-    marginBottom: 16,
-  },
+
   locationTextContainer: {
     padding: 1,
   },
@@ -162,7 +224,6 @@ const styles = StyleSheet.create({
   destinationLocationRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 8,
   },
   startIcon: {
     marginRight: 12,
@@ -184,22 +245,26 @@ const styles = StyleSheet.create({
     color: "#666666",
   },
   dotsContainer: {
-    justifyContent: "center",
+    flexDirection: "column",
     marginLeft: 10,
-    height: 40,
+    height: 20,
   },
   dot: {
-    width: 5,
-    height: 5,
+    width: 3,
+    height: 3,
     backgroundColor: "#666",
     borderRadius: 3,
-    marginVertical: 6,
+    marginVertical: 2,
   },
   payment: {
+    backgroundColor: "white",
+    borderTopWidth: 5,
+    borderColor: "#EFF3FE",
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 8,
-    marginBottom: 16,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    padding: 16,
   },
   paymentIcon: {
     width: 30,
@@ -219,11 +284,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000000",
     marginTop: 4,
-  },
-  otherPaymentIcon: {
-    width: 30,
-    height: 30,
-    marginLeft: "auto",
   },
   lookingText: {
     fontSize: 20,

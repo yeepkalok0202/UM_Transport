@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { useRouter, useGlobalSearchParams } from 'expo-router';
-import "nativewind";
-import '../../global.css';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import axios from "axios";
+import { useRouter, useGlobalSearchParams } from "expo-router";
 
 // Define the type for a destination
 type Destination = {
@@ -13,20 +18,20 @@ type Destination = {
 };
 
 export default function SapuHomeScreen() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const router = useRouter();
   const { location } = useGlobalSearchParams();
 
   const handlePress = () => {
-    router.push('/pages/book_ride');
+    router.push("/pages/book_ride");
   };
 
   const handleLocationPress = () => {
-    router.push('/pages/starting_point');
+    router.push("/pages/starting_point");
   };
 
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY';
+  const GOOGLE_MAPS_API_KEY = "AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY";
 
   // Function to fetch search results from Google Places API
   const fetchPlaces = async (query: string) => {
@@ -41,7 +46,7 @@ export default function SapuHomeScreen() {
       }));
       setDestinations(places);
     } catch (error) {
-      console.error('Error fetching places: ', error);
+      console.error("Error fetching places: ", error);
     }
   };
 
@@ -53,8 +58,14 @@ export default function SapuHomeScreen() {
   };
 
   const renderDestinationItem = ({ item }: { item: Destination }) => (
-    <TouchableOpacity className="flex-row items-center mb-4 mx-2" onPress={handlePress}>
-      <Image source={require('@/assets/icons/destination_icon.png')} className="ml-1 mr-5 h-10 w-10" />
+    <TouchableOpacity
+      className="flex-row items-center mb-4 mx-2"
+      onPress={handlePress}
+    >
+      <Image
+        source={require("@/assets/icons/destination_icon.png")}
+        className="ml-1 mr-5 h-10 w-10"
+      />
       <View className="flex-1">
         <Text className="text-base font-bold text-gray-900">{item.name}</Text>
         <Text className="text-sm text-gray-600 truncate">{item.address}</Text>
@@ -66,12 +77,26 @@ export default function SapuHomeScreen() {
     <View className="flex-1 bg-white">
       {/* Header Section */}
       <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
-        <TouchableOpacity onPress={handleLocationPress} className="flex-row items-center">
-          <Image source={require('@/assets/icons/location.png')} className="h-5 w-5 mr-2" />
-          <Text className="text-white text-lg font-bold">{location || 'KK8, UM'}</Text>
-          <Image source={require('@/assets/icons/down.png')} className="h-5 w-5 ml-2" />
+        <TouchableOpacity
+          onPress={handleLocationPress}
+          className="flex-row items-center"
+        >
+          <Image
+            source={require("@/assets/icons/location.png")}
+            className="h-5 w-5 mr-2"
+          />
+          <Text className="text-white text-lg font-bold">
+            {location || "KK8, UM"}
+          </Text>
+          <Image
+            source={require("@/assets/icons/down.png")}
+            className="h-5 w-5 ml-2"
+          />
         </TouchableOpacity>
-        <Image source={require('@/assets/icons/profile.png')} className="h-9 w-9 rounded-full bg-white" />
+        <Image
+          source={require("@/assets/icons/profile.png")}
+          className="h-9 w-9 rounded-full bg-white"
+        />
       </View>
 
       {/* Search Box */}
@@ -84,7 +109,10 @@ export default function SapuHomeScreen() {
             value={searchQuery}
             onChangeText={handleSearch}
           />
-          <Image source={require('@/assets/icons/searchbox_icon.png')} className="h-5 w-4" />
+          <Image
+            source={require("@/assets/icons/searchbox_icon.png")}
+            className="h-5 w-4"
+          />
         </View>
       </View>
 
