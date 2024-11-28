@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
-import "../global.css"
+import "../global.css";
 import "nativewind"
 
 export default function Index() {
