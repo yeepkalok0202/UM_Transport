@@ -8,7 +8,7 @@ export default function Layout() {
         name="starting_point"
         options={{ title: "Starting Point" }}
       />
-      <Stack.Screen name="book_ride" options={{ title: "Book Ride" }} />
+      <Stack.Screen name="book_ride" options={{ title: "Book Ride"}} />
     </Stack>
   );
 }

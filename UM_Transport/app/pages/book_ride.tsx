@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useRouter, useGlobalSearchParams } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios'; 
 import "nativewind";
 import '../../global.css';
@@ -15,8 +16,14 @@ const getAsString = (value: string | string[] | undefined): string => {
   return value || ''; // Return the string or a default empty string
 };
 
+export const unstable_settings = {
+  reloadOnBlur: true, // Forces the screen to reload when navigated back to
+};
+
+
 export default function BookRideScreen() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(true);
   const { startPoint: rawStartPoint, endPoint: rawEndPoint, startAddress: rawStartAddress, endAddress: rawEndAddress } = useGlobalSearchParams();
   const [isBooked, setIsBooked] = useState(false);
   const [startCoordinates, setStartCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -27,6 +34,22 @@ export default function BookRideScreen() {
   const startAddress = getAsString(rawStartAddress); // Ensure it's a string
   const endAddress = getAsString(rawEndAddress); // Ensure it's a string
 
+  // Cleanup logic to unmount the screen
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log("BookRideScreen mounted.");
+      setIsMounted(true); // Set mounted when focused
+
+      return () => {
+        console.log("BookRideScreen unmounted.");
+        setIsMounted(false); // Cleanup: simulate unmounting
+      };
+    }, [])
+  );
+
+  if (!isMounted) {
+    return null; // Avoid rendering anything if unmounted
+  }
 
   // Function to toggle booking state
   const handleBookingToggle = () => {
@@ -71,12 +94,34 @@ export default function BookRideScreen() {
   }, [startCoordinates, endCoordinates]);
 
   // Fetch coordinates when component mounts
-  useEffect(() => {
-    console.log('Start Address:', startAddress);
-    console.log('End Address:', endAddress);
-    if (startAddress) fetchCoordinates(startAddress, true); // Fetch start point coordinates
-    if (endAddress) fetchCoordinates(endAddress, false); // Fetch end point coordinates
-  }, [startAddress, endAddress]);
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('BookRideScreen focused. Fetching coordinates.');
+      if (startAddress) fetchCoordinates(startAddress, true); // Refetch start point coordinates
+      if (endAddress) fetchCoordinates(endAddress, false); // Refetch end point coordinates
+  
+      return () => {
+        console.log('BookRideScreen unfocused.');
+      };
+    }, [startAddress, endAddress]) // Dependencies ensure refetching when addresses change
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset coordinates when screen is focused
+      setStartCoordinates(null);
+      setEndCoordinates(null);
+      if (mapRef.current) {
+        mapRef.current = null; // Clear map reference
+      }
+      console.log('BookRideScreen mounted. State reset.');
+  
+      return () => {
+        console.log('BookRideScreen unmounted.');
+      };
+    }, []) // Empty dependency array ensures it runs once when focused
+  );
+  
 
   return (
     <View style={styles.container}>
@@ -205,6 +250,20 @@ export default function BookRideScreen() {
               <Text style={styles.locationAddress} numberOfLines={2} ellipsizeMode="tail">{endAddress || 'Not Set'}</Text>
             </View>
           </View>
+        </View>
+        <View style={styles.payment}>
+          <Image
+            source={require('@/assets/icons/payment_icon.png')} // Payment icon
+            style={styles.paymentIcon}
+          />
+          <View style={styles.paymentTextContainer}>
+            <Text style={styles.paymentText}>Siswacard</Text>
+            <Text style={styles.paymentAmount}>RM5.00</Text>
+          </View>
+          <Image
+            source={require('@/assets/icons/other_payment.png')} // Other payment icon
+            style={styles.otherPaymentIcon}
+          />
         </View>
       </View>
 
