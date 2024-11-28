@@ -1,11 +1,20 @@
 import { Stack } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+export const unstable_settings = {
+  initialRouteName: "index",
+
+  pages: {
+    initialRouteName: "sapu_home",
+  },
+};
 
 export default function RootLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="sapu_home" options={{ title: "Sapu Home"}} />
-      <Stack.Screen name="starting_point" options={{ title: "Starting Point"}} />
-      <Stack.Screen name="book_ride" options={{ title: "Book Ride"}} />
-    </Stack>
+    <SafeAreaView style={{ flex: 1, margin: 0, padding: 0 }}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="pages" />
+      </Stack>
+    </SafeAreaView>
   );
 }
