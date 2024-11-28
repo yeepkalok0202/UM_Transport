@@ -8,7 +8,19 @@ export default function Layout() {
         name="starting_point"
         options={{ title: "Starting Point" }}
       />
-      <Stack.Screen name="book_ride" options={{ title: "Book Ride"}} />
+      <Stack.Screen
+        name="book_ride"
+        options={{
+          headerTitle: "Book a Ride",
+          headerShown: true,
+          headerBackButtonDisplayMode: "minimal",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "bold", // Make it bold
+            fontSize: 18, // Optional: Customize font size
+          },
+        }}
+      />
     </Stack>
   );
 }
