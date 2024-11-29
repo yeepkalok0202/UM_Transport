@@ -1,16 +1,16 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useRef } from "react";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 const busMap = () => {
-  const mapRef = useRef<any>();
+  const mapRef = useRef<MapView | null>(null);
   const [mapReady, setMapReady] = React.useState(false);
 
   const INITIAL_REGION = {
     latitude: 4.863355045799683,
     longitude: 101.88235187750773,
-    latitudeDelta: 6,
-    longitudeDelta: 6,
+    latitudeDelta: 5,
+    longitudeDelta: 5,
   };
   const fsktm = {
     latitude: 3.12834,
@@ -21,7 +21,7 @@ const busMap = () => {
 
   useEffect(() => {
     if (mapReady) {
-      mapRef.current.animateCamera(fsktm, 4000);
+      mapRef.current?.animateToRegion(fsktm, 2000);
     }
   }, [mapReady]);
 
@@ -30,10 +30,21 @@ const busMap = () => {
       <MapView
         ref={mapRef}
         style={{ flex: 1 }}
-        showsUserLocation
         initialRegion={INITIAL_REGION}
-        onMapReady={() => setMapReady(true)}
-      ></MapView>
+        onMapReady={() => setTimeout(() => setMapReady(true), 1000)}
+      >
+        <Marker
+          coordinate={{
+            latitude: fsktm.latitude,
+            longitude: fsktm.longitude,
+          }}
+          image={require("@/assets/icons/current_location.png")}
+          style={{ width: 10, height: 10 }}
+          title="You"
+          description="Faked Location"
+          pinColor="blue"
+        />
+      </MapView>
     </View>
   );
 };

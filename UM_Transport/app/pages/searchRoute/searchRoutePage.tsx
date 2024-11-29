@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Searchbar } from "react-native-paper";
 import { useRouter } from "expo-router";
+import SuggestionBottom from "@/components/ui/SuggestionBottom";
 
 export default function SearchRoutePage() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function SearchRoutePage() {
       <Searchbar
         placeholder="Search"
         style={styles.searchBar}
+        placeholderTextColor={"#ADAEB9"}
         icon="map-marker"
         iconColor="#ADAEB9"
         onChangeText={setSearchQuery}
@@ -32,14 +34,14 @@ export default function SearchRoutePage() {
       >
         <Image
           source={require("@/assets/images/mapPlaceHolder.png")}
-          style={{ borderRadius: 12, marginVertical: 16 }}
+          style={{ borderRadius: 12, marginVertical: 16, alignSelf: "center" }}
         />
       </TouchableOpacity>
       <Text style={styles.text}>Buses on service</Text>
       <View style={{ marginTop: 32 }}>
         {bus.map((bus, index) => (
           <View key={bus.id || index}>
-            <TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.6}>
               <View
                 style={[
                   styles.rowContainer,
