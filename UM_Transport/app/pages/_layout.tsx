@@ -11,9 +11,14 @@ export default function Layout() {
       <Stack.Screen
         name="book_ride"
         options={{
-          headerTitle: "Book A Ride",
+          headerTitle: "Book a Ride",
           headerShown: true,
           headerBackButtonDisplayMode: "minimal",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "bold", // Make it bold
+            fontSize: 18, // Optional: Customize font size
+          },
         }}
       />
     </Stack>
