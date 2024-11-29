@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
-import axios from 'axios';
-import { useRouter } from 'expo-router';
-import * as Location from 'expo-location';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import axios from "axios";
+import { useRouter } from "expo-router";
+import * as Location from "expo-location";
 import "nativewind";
-import '../../global.css';
+import "../../../global.css";
 
 // Define the type for a destination
 type Destination = {
@@ -14,25 +22,25 @@ type Destination = {
 };
 
 export default function StartingPointScreen() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const router = useRouter();
 
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY';
+  const GOOGLE_MAPS_API_KEY = "AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY";
 
   const handlePress = (startPoint: string, startAddress: string) => {
     // Navigate to sapu_home with the selected destination
-    router.push({ 
-        pathname: '/pages/sapu_home', 
-        params: { 
-            startPoint: startPoint, 
-            startAddress: startAddress
-        } 
+    router.push({
+      pathname: "/pages/sapu/sapu_home",
+      params: {
+        startPoint: startPoint,
+        startAddress: startAddress,
+      },
     });
   };
 
   const handleClearSearch = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setDestinations([]);
   };
 
@@ -49,7 +57,7 @@ export default function StartingPointScreen() {
       }));
       setDestinations(places);
     } catch (error) {
-      console.error('Error fetching places: ', error);
+      console.error("Error fetching places: ", error);
     }
   };
 
@@ -67,8 +75,11 @@ export default function StartingPointScreen() {
     try {
       // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Location permissions are required to use this feature.');
+      if (status !== "granted") {
+        Alert.alert(
+          "Permission Denied",
+          "Location permissions are required to use this feature."
+        );
         return;
       }
 
@@ -82,7 +93,8 @@ export default function StartingPointScreen() {
       );
 
       if (locationResponse.data.results.length > 0) {
-        const currentLocationName = locationResponse.data.results[0].formatted_address;
+        const currentLocationName =
+          locationResponse.data.results[0].formatted_address;
         setSearchQuery(currentLocationName);
 
         // Fetch nearby places using Google Places API
@@ -98,11 +110,11 @@ export default function StartingPointScreen() {
 
         setDestinations(places);
       } else {
-        Alert.alert('Error', 'Unable to fetch the current location name.');
+        Alert.alert("Error", "Unable to fetch the current location name.");
       }
     } catch (error) {
-      console.error('Error fetching nearby places:', error);
-      Alert.alert('Error', 'Unable to fetch nearby places.');
+      console.error("Error fetching nearby places:", error);
+      Alert.alert("Error", "Unable to fetch nearby places.");
     }
   };
 
@@ -112,8 +124,14 @@ export default function StartingPointScreen() {
   }, []);
 
   const renderDestinationItem = ({ item }: { item: Destination }) => (
-    <TouchableOpacity className="flex-row items-center mb-4 mx-2" onPress={() => handlePress(item.name, item.address)}>
-      <Image source={require('@/assets/icons/destination_icon.png')} className="ml-1 mr-5 h-10 w-10" />
+    <TouchableOpacity
+      className="flex-row items-center mb-4 mx-2"
+      onPress={() => handlePress(item.name, item.address)}
+    >
+      <Image
+        source={require("@/assets/icons/destination_icon.png")}
+        className="ml-1 mr-5 h-10 w-10"
+      />
       <View className="flex-1">
         <Text className="text-base font-bold text-gray-900">{item.name}</Text>
         <Text className="text-sm text-gray-600 truncate">{item.address}</Text>
@@ -126,10 +144,18 @@ export default function StartingPointScreen() {
       {/* Header Section */}
       <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
         <TouchableOpacity onPress={() => router.back()}>
-          <Image source={require('@/assets/icons/white_back_icon.png')} className="ml-3 mt-2 h-4 w-4" />
+          <Image
+            source={require("@/assets/icons/white_back_icon.png")}
+            className="ml-3 mt-2 h-4 w-4"
+          />
         </TouchableOpacity>
-        <Text className="text-white text-xl font-bold">Set your Starting Point</Text>
-        <Image source={require('@/assets/icons/profile.png')} className="h-9 w-9 rounded-full bg-white" />
+        <Text className="text-white text-xl font-bold">
+          Set your Starting Point
+        </Text>
+        <Image
+          source={require("@/assets/icons/profile.png")}
+          className="h-9 w-9 rounded-full bg-white"
+        />
       </View>
 
       {/* Search Box */}
@@ -143,7 +169,10 @@ export default function StartingPointScreen() {
             onChangeText={handleSearch}
           />
           <TouchableOpacity onPress={handleClearSearch}>
-            <Image source={require('@/assets/icons/close.png')} className="h-7 w-7" />
+            <Image
+              source={require("@/assets/icons/close.png")}
+              className="h-7 w-7"
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -153,8 +182,13 @@ export default function StartingPointScreen() {
         onPress={fetchNearbyPlaces}
         className="mt-12 mx-6 bg-blue-100 rounded-md px-4 py-3 flex-row items-center"
       >
-        <Image source={require('@/assets/icons/current_location_icon.png')} className="h-8 w-8 mr-2" />
-        <Text className="text-black text-base font-bold ml-3">Current location</Text>
+        <Image
+          source={require("@/assets/icons/current_location_icon.png")}
+          className="h-8 w-8 mr-2"
+        />
+        <Text className="text-black text-base font-bold ml-3">
+          Current location
+        </Text>
       </TouchableOpacity>
 
       {/* Destination List */}
