@@ -20,9 +20,15 @@ export default function StartingPointScreen() {
 
   const GOOGLE_MAPS_API_KEY = 'AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY';
 
-  const handlePress = (destinationName: string) => {
+  const handlePress = (startPoint: string, startAddress: string) => {
     // Navigate to sapu_home with the selected destination
-    router.push({ pathname: '/pages/sapu_home', params: { location: destinationName } });
+    router.push({ 
+        pathname: '/pages/sapu_home', 
+        params: { 
+            startPoint: startPoint, 
+            startAddress: startAddress
+        } 
+    });
   };
 
   const handleClearSearch = () => {
@@ -106,7 +112,7 @@ export default function StartingPointScreen() {
   }, []);
 
   const renderDestinationItem = ({ item }: { item: Destination }) => (
-    <TouchableOpacity className="flex-row items-center mb-4 mx-2" onPress={() => handlePress(item.name)}>
+    <TouchableOpacity className="flex-row items-center mb-4 mx-2" onPress={() => handlePress(item.name, item.address)}>
       <Image source={require('@/assets/icons/destination_icon.png')} className="ml-1 mr-5 h-10 w-10" />
       <View className="flex-1">
         <Text className="text-base font-bold text-gray-900">{item.name}</Text>
