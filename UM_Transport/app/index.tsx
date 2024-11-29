@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 
 import "../global.css";
@@ -28,6 +28,13 @@ export default function Index() {
       >
         <Text className="text-white">Search route</Text>
       </TouchableOpacity>
+
+	  <Pressable className="bg-blue-500 p-2 rounded-2xl flex-nowrap mt-10">
+		<Text className="text-white"
+		onPress={() => {
+			router.push("/pages/suggestion/suggestion_home")
+		}}>Route Suggestion</Text>
+	  </Pressable>
     </View>
   );
 }

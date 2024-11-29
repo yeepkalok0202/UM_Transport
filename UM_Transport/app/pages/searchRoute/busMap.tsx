@@ -21,7 +21,7 @@ const busMap = () => {
 
   useEffect(() => {
     if (mapReady) {
-      mapRef.current.animateCamera(fsktm, 4000);
+      mapRef.current.animateCamera(fsktm, 2000);
     }
   }, [mapReady]);
 
@@ -40,4 +40,3 @@ const busMap = () => {
 
 export default busMap;
 
-const styles = StyleSheet.create({});
