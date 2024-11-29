@@ -4,7 +4,7 @@ export default function Layout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerBackButtonDisplayMode: "minimal",
       }}
     >
