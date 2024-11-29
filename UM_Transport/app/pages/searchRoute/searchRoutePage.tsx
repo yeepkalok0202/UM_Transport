@@ -56,7 +56,7 @@ export default function SearchRoutePage() {
     <SafeView>
       <ScrollView style={styles.container}>
         {/* Search Bar */}
-<Searchbar
+        <Searchbar
           placeholder="Search"
           style={styles.searchBar}
           icon="map-marker"

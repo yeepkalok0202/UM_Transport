@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert, FlatList, Keyboard } from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import { View, StyleSheet, Alert, FlatList, Keyboard, StatusBar } from 'react-native';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Location from 'expo-location';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -186,7 +186,7 @@ const BusTracking = () => {
         // Set a timer to hide the notification after 30 seconds
         const timer = setTimeout(() => {
             setNotification(false);
-        }, 30000); // 30 seconds
+        }, 10000); // 10 seconds
         // Cleanup the timer when the component is unmounted
         return () => clearTimeout(timer);
     }, []);
@@ -201,6 +201,7 @@ const BusTracking = () => {
                 zoomControlEnabled={true}
                 showsUserLocation={true}
                 showsMyLocationButton={true}
+                provider={PROVIDER_GOOGLE}
             >
                 {location && (
                     <Marker

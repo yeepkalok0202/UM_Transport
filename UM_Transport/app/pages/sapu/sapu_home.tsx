@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
+  Keyboard,
 } from "react-native";
 import axios from "axios";
 import { useRouter, useGlobalSearchParams } from "expo-router";
@@ -25,8 +26,24 @@ export default function SapuHomeScreen() {
   const router = useRouter();
   const { startPoint, startAddress } = useGlobalSearchParams(); // Get the starting point from global search params
   const [endPoint, setEndPoint] = useState(""); // State for the selected end point
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const GOOGLE_MAPS_API_KEY = "AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY";
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+    setKeyboardVisible(true);
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+    setKeyboardVisible(false);
+    });
+
+    return () => {
+    keyboardDidShowListener.remove();
+    keyboardDidHideListener.remove();
+    };
+}, []);
 
   // Function to navigate to Book Ride page with both starting and end points
   const navigateToBookRide = (endPoint: string, endAddress: string) => {
@@ -89,7 +106,7 @@ export default function SapuHomeScreen() {
   );
 
   return (
-    <SafeView>
+    <View className="flex-1 bg-white">
       <StatusBar barStyle="light-content" backgroundColor="#4285F4" />
       {/* Header Section */}
       <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
@@ -136,12 +153,22 @@ export default function SapuHomeScreen() {
       </View>
 
       {/* Destination List */}
+
+      {!keyboardVisible && destinations.length === 0 ? (
+        <View style={{ justifyContent: "center", alignItems: "center", alignSelf: "center", position: "absolute", bottom: 0, height: 200 }}>
+          <Image
+          source={require('../../../../UM_Transport/assets/images/Frame.png')}
+
+        />
+        </View>
+      ) : (
       <FlatList
         data={destinations}
         renderItem={renderDestinationItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ marginTop: 60, paddingHorizontal: 16 }}
       />
-    </SafeView>
+    )}
+    </View>
   );
 }

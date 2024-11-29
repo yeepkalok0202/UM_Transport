@@ -142,20 +142,24 @@ export default function StartingPointScreen() {
   return (
     <View className="flex-1 bg-white">
       {/* Header Section */}
-      <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
+      <View className="flex-row items-start space-evenly bg-[#4285F4] px-5 pt-10 h-32">
         <TouchableOpacity onPress={() => router.back()}>
           <Image
             source={require("@/assets/icons/white_back_icon.png")}
             className="ml-3 mt-2 h-4 w-4"
           />
         </TouchableOpacity>
-        <Text className="text-white text-xl font-bold">
+        <Text style={{fontSize: 20, fontWeight: "bold", color: "white", textAlign: "center", marginLeft: 10}}>
           Set your Starting Point
         </Text>
-        <Image
-          source={require("@/assets/icons/profile.png")}
-          className="h-9 w-9 rounded-full bg-white"
-        />
+        <View style={{position: "absolute", right: 20, top: 10}}>
+          <Image
+            source={require("@/assets/icons/profile.png")}
+            style={{ height: 50, width: 50 }}
+          />
+          <View style={{position: "absolute", top: 35, right: 0, backgroundColor: "#6DE67B", borderRadius: 50, width: 15, height: 15, justifyContent: "center", alignItems: "center", borderColor: "white", borderWidth: 2, }}>
+        </View>
+        </View>
       </View>
 
       {/* Search Box */}
@@ -191,13 +195,24 @@ export default function StartingPointScreen() {
         </Text>
       </TouchableOpacity>
 
-      {/* Destination List */}
-      <FlatList
-        data={destinations}
-        renderItem={renderDestinationItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ marginTop: 30, paddingHorizontal: 16 }}
-      />
+    
+      {destinations.length === 0 ? (
+        <View style={{ justifyContent: "center", alignItems: "center", alignSelf: "center", position: "absolute", bottom: 0, height: 200 }}>
+          <Image
+          source={require('../../../../UM_Transport/assets/images/Frame.png')}
+
+        />
+        </View>
+      ) : (
+        <FlatList
+          data={destinations}
+          renderItem={renderDestinationItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ marginTop: 30, paddingHorizontal: 16 }}
+        />
+      )}
+
+      
     </View>
   );
 }
