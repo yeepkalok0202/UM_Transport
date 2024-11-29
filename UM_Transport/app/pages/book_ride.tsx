@@ -101,37 +101,66 @@ export default function BookRideScreen() {
   };
 
   // Function to fetch coordinates using Geocoding API
-  const fetchCoordinates = async (address: string, isStartPoint: boolean) => {
+  // const fetchCoordinates = async (address: string, isStartPoint: boolean) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+  //         address
+  //       )}&key=${GOOGLE_MAPS_API_KEY}`
+  //     );
+  //     console.log("Geocoding Response: ", response.data);
+  //     console.log(
+  //       "Full Geocoding Response: ",
+  //       JSON.stringify(response.data, null, 2)
+  //     );
+  //     const location = response.data.results[0]?.geometry.location;
+
+  //     if (location) {
+  //       if (isStartPoint) {
+  //         setStartCoordinates({
+  //           latitude: location.lat,
+  //           longitude: location.lng,
+  //         });
+  //       } else {
+  //         setEndCoordinates({
+  //           latitude: location.lat,
+  //           longitude: location.lng,
+  //         });
+  //       }
+  //     } else {
+  //       Alert.alert("Error", `Unable to fetch coordinates for ${address}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching coordinates:", error);
+  //     Alert.alert("Error", "Failed to fetch coordinates. Please try again.");
+  //   }
+  // };
+
+  // Function to fetch coordinates using Places API
+  const fetchPlaceCoordinates = async (placeName: string, isStartPoint: boolean) => {
+    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
+      placeName
+    )}&key=${GOOGLE_MAPS_API_KEY}`;
+
     try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          address
-        )}&key=${GOOGLE_MAPS_API_KEY}`
-      );
-      console.log("Geocoding Response: ", response.data);
-      console.log(
-        "Full Geocoding Response: ",
-        JSON.stringify(response.data, null, 2)
-      );
+      const response = await axios.get(url);
       const location = response.data.results[0]?.geometry.location;
 
       if (location) {
+        const coordinates = {
+          latitude: location.lat,
+          longitude: location.lng,
+        };
         if (isStartPoint) {
-          setStartCoordinates({
-            latitude: location.lat,
-            longitude: location.lng,
-          });
+          setStartCoordinates(coordinates);
         } else {
-          setEndCoordinates({
-            latitude: location.lat,
-            longitude: location.lng,
-          });
+          setEndCoordinates(coordinates);
         }
       } else {
-        Alert.alert("Error", `Unable to fetch coordinates for ${address}`);
+        Alert.alert("Error", `No results found for "${placeName}"`);
       }
     } catch (error) {
-      console.error("Error fetching coordinates:", error);
+      console.error("Error fetching place coordinates:", error);
       Alert.alert("Error", "Failed to fetch coordinates. Please try again.");
     }
   };
@@ -155,13 +184,13 @@ export default function BookRideScreen() {
   useFocusEffect(
     React.useCallback(() => {
       console.log("BookRideScreen focused. Fetching coordinates.");
-      if (startAddress) fetchCoordinates(startAddress, true); // Refetch start point coordinates
-      if (endAddress) fetchCoordinates(endAddress, false); // Refetch end point coordinates
+      if (startPoint) fetchPlaceCoordinates(startPoint, true); // Refetch start point coordinates
+      if (endPoint) fetchPlaceCoordinates(endPoint, false); // Refetch end point coordinates
 
       return () => {
         console.log("BookRideScreen unfocused.");
       };
-    }, [startAddress, endAddress]) // Dependencies ensure refetching when addresses change
+    }, [startPoint, endPoint]) // Dependencies ensure refetching when addresses change
   );
 
   useFocusEffect(

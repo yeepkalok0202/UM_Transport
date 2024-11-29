@@ -16,8 +16,8 @@ export default function Layout() {
           headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
           headerTitleStyle: {
-            fontWeight: "bold", // Make it bold
-            fontSize: 18, // Optional: Customize font size
+            fontWeight: "bold", 
+            fontSize: 18, 
           },
         }}
       />
