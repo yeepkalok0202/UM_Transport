@@ -68,12 +68,12 @@ const FareDetails: React.FC<FareDetailsProps> = ({
               </View>
             </View>
             <View style={styles.divider} />
-            <LocationDetails
-              startLocation={startLocation}
-              destinationLocation={destinationLocation}
-            />
           </>
         )}
+        <LocationDetails
+          startLocation={startLocation}
+          destinationLocation={destinationLocation}
+        />
       </View>
       <View style={styles.payment}>
         <Image

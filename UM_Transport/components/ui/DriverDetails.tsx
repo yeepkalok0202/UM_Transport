@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import LocationDetails from "./LocationDetails";
 
 interface DriverDetailsProps {
   startLocation: {
@@ -153,50 +154,10 @@ const DriverDetails: React.FC<DriverDetailsProps> = ({
         </View>
       </View>
       <View style={styles.containerMiddle}>
-        <View
-          style={{
-            flexDirection: "column",
-            alignSelf: "flex-start",
-          }}
-        >
-          <View style={styles.locationRow}>
-            <Image
-              source={require("@/assets/icons/start_point_icon.png")}
-              style={styles.startIcon}
-            />
-            <View style={{ flexDirection: "column" }}>
-              <Text style={styles.locationName}>{startLocation.name}</Text>
-              <Text style={styles.locationAddress}>
-                {startLocation.address}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              marginLeft: 10,
-              marginBottom: 4,
-            }}
-          >
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-          </View>
-          <View style={styles.destinationLocationRow}>
-            <Image
-              source={require("@/assets/icons/end_point_icon.png")}
-              style={styles.endIcon}
-            />
-            <View style={styles.locationTextContainer}>
-              <Text style={styles.locationName}>
-                {destinationLocation.name}
-              </Text>
-              <Text style={styles.locationAddress}>
-                {destinationLocation.address}
-              </Text>
-            </View>
-          </View>
-        </View>
+        <LocationDetails
+          startLocation={startLocation}
+          destinationLocation={destinationLocation}
+        />
         <View style={styles.payment}>
           <Image
             source={require("@/assets/icons/payment_icon.png")}
@@ -259,61 +220,11 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
     alignItems: "center",
   },
-  icon: {
-    height: 25,
-    width: 25,
-    marginRight: 8,
-    marginLeft: 8,
-    backgroundColor: "#D2E2ED",
-    borderRadius: 12,
-  },
-  locationTextContainer: {
-    padding: 1,
-  },
-  locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  destinationLocationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  startIcon: {
-    marginRight: 12,
-    width: 25,
-    height: 25,
-  },
-  endIcon: {
-    marginRight: 12,
-    width: 25,
-    height: 25,
-  },
-  locationName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333333",
-  },
-  locationAddress: {
-    fontSize: 14,
-    color: "#666666",
-  },
-  dotsContainer: {
-    flexDirection: "column",
-    marginLeft: 10,
-    height: 20,
-  },
-  dot: {
-    width: 3,
-    height: 3,
-    backgroundColor: "#666",
-    borderRadius: 3,
-    marginVertical: 2,
-  },
   payment: {
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 24,
+    marginTop: 16,
   },
   paymentIcon: {
     width: 30,
@@ -337,7 +248,6 @@ const styles = StyleSheet.create({
   },
   cancel: {
     fontSize: 16,
-
     color: "#E95F5F",
   },
 });

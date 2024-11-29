@@ -72,7 +72,12 @@ const ArrivalDetails: React.FC<ArrivalDetailsProps> = ({
                 source={require("@/assets/icons/end_point_icon.png")}
                 style={styles.endIcon}
               />
-              <View style={{ marginBottom: 16 }}>
+              <View
+                style={{
+                  marginBottom: 16,
+                  flex: 1,
+                }}
+              >
                 <Text style={styles.locationName}>
                   {destinationLocation.name}
                 </Text>
