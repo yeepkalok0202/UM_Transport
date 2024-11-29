@@ -4,6 +4,7 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { useGlobalSearchParams } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
+import polyline from "@mapbox/polyline";
 import FareDetails from "@/components/ui/FareDetails";
 import DriverDetails from "@/components/ui/DriverDetails";
 import ArrivalDetails from "@/components/ui/ArrivalDetails";
@@ -14,6 +15,8 @@ export default function BookRideScreen() {
   const [isDriverFound, setIsDriverFound] = useState(false);
   const [isArrived, setIsArrived] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
+  const [routeDuration, setRouteDuration] = useState<string>("Loading...");
 
   const {
     startPoint: rawStartPoint,
@@ -100,42 +103,6 @@ export default function BookRideScreen() {
     setIsBooked(!isBooked);
   };
 
-  // Function to fetch coordinates using Geocoding API
-  // const fetchCoordinates = async (address: string, isStartPoint: boolean) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-  //         address
-  //       )}&key=${GOOGLE_MAPS_API_KEY}`
-  //     );
-  //     console.log("Geocoding Response: ", response.data);
-  //     console.log(
-  //       "Full Geocoding Response: ",
-  //       JSON.stringify(response.data, null, 2)
-  //     );
-  //     const location = response.data.results[0]?.geometry.location;
-
-  //     if (location) {
-  //       if (isStartPoint) {
-  //         setStartCoordinates({
-  //           latitude: location.lat,
-  //           longitude: location.lng,
-  //         });
-  //       } else {
-  //         setEndCoordinates({
-  //           latitude: location.lat,
-  //           longitude: location.lng,
-  //         });
-  //       }
-  //     } else {
-  //       Alert.alert("Error", `Unable to fetch coordinates for ${address}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching coordinates:", error);
-  //     Alert.alert("Error", "Failed to fetch coordinates. Please try again.");
-  //   }
-  // };
-
   // Function to fetch coordinates using Places API
   const fetchPlaceCoordinates = async (placeName: string, isStartPoint: boolean) => {
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
@@ -219,6 +186,45 @@ export default function BookRideScreen() {
     address: endAddress || "Unknown address",
   };
 
+  const fetchRoute = async () => {
+    if (!startCoordinates || !endCoordinates) {
+      Alert.alert("Error", "Start or End coordinates are missing.");
+      return;
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startCoordinates.latitude},${startCoordinates.longitude}&destination=${endCoordinates.latitude},${endCoordinates.longitude}&key=${GOOGLE_MAPS_API_KEY}`;
+
+    
+    try {
+      const response = await axios.get(url);
+      if (response.data.routes.length) {
+        const route = response.data.routes[0];
+        const points = response.data.routes[0].overview_polyline.points;
+        const decodedCoordinates = polyline.decode(points).map(([lat, lng]) => ({
+          latitude: lat,
+          longitude: lng,
+        }));
+         // Extract duration from the first leg
+        const duration = route.legs[0]?.duration?.text || "Unknown duration";
+
+        console.log("Route duration:", duration);
+        setRouteCoordinates(decodedCoordinates); // Set decoded coordinates
+        setRouteDuration(duration);
+      } else {
+        Alert.alert("Error", "No routes found.");
+      }
+    } catch (error) {
+      console.error("Error fetching route:", error);
+      Alert.alert("Error", "Failed to fetch route. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    if (startCoordinates && endCoordinates) {
+      fetchRoute(); // Fetch route when coordinates are available
+    }
+  }, [startCoordinates, endCoordinates]);
+
   return (
     <View style={styles.container}>
       <ArrivalDetails
@@ -292,18 +298,9 @@ export default function BookRideScreen() {
           )}
 
         {/* Route Polyline */}
-        {startCoordinates && endCoordinates && (
+        {Array.isArray(routeCoordinates) && routeCoordinates.length > 0 && (
           <Polyline
-            coordinates={[
-              {
-                latitude: startCoordinates.latitude,
-                longitude: startCoordinates.longitude,
-              },
-              {
-                latitude: endCoordinates.latitude,
-                longitude: endCoordinates.longitude,
-              },
-            ]}
+            coordinates={routeCoordinates}
             strokeColor="#4285F4"
             strokeWidth={4}
           />
@@ -321,7 +318,7 @@ export default function BookRideScreen() {
               destinationLocation={destinationLocation}
               fareAmount="RM5.00"
               walletAmount="RM50.00"
-              timeEstimate="10 mins"
+              timeEstimate={routeDuration}
               paymentMethod="Siswacard"
             />
           )}
