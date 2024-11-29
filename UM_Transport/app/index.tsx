@@ -15,10 +15,18 @@ export default function Index() {
     <View className="flex-1">
       <Text>Edit app/index.tsx to edit this screen.</Text>
       <TouchableOpacity
-        className="bg-blue-500 p-2 rounded-2xl flex-nowrap"
+        className="bg-blue-500 p-2 rounded-2xl flex-nowrap mb-10"
         onPress={handlePress}
       >
         <Text className="text-white">Sapu</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        className="bg-blue-500 p-2 rounded-2xl flex-nowrap"
+        onPress={() => {
+          router.push("/pages/searchRoute/searchRoutePage");
+        }}
+      >
+        <Text className="text-white">Search route</Text>
       </TouchableOpacity>
     </View>
   );
