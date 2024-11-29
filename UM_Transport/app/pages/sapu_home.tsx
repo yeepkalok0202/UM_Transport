@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import { useRouter, useGlobalSearchParams } from 'expo-router';
-import "nativewind";
-import '../../global.css';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import axios from "axios";
+import { useRouter, useGlobalSearchParams } from "expo-router";
 
 // Define the type for a destination
 type Destination = {
@@ -13,7 +18,7 @@ type Destination = {
 };
 
 export default function SapuHomeScreen() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const router = useRouter();
   const { startPoint, startAddress } = useGlobalSearchParams(); // Get the starting point from global search params
@@ -36,8 +41,9 @@ export default function SapuHomeScreen() {
 
   // Function to navigate to Starting Point selection page
   const handleLocationPress = () => {
-    router.push('/pages/starting_point');
+    router.push("/pages/starting_point");
   };
+
 
   // Function to fetch places using Google Places API
   const fetchPlaces = async (query: string) => {
@@ -95,7 +101,10 @@ export default function SapuHomeScreen() {
             {startPoint || 'KK8, UM'}
           </Text>
         </TouchableOpacity>
-        <Image source={require('@/assets/icons/profile.png')} className="h-9 w-9 rounded-full bg-white" />
+        <Image
+          source={require("@/assets/icons/profile.png")}
+          className="h-9 w-9 rounded-full bg-white"
+        />
       </View>
 
 
@@ -109,7 +118,10 @@ export default function SapuHomeScreen() {
             value={searchQuery}
             onChangeText={handleSearch}
           />
-          <Image source={require('@/assets/icons/searchbox_icon.png')} className="h-5 w-4" />
+          <Image
+            source={require("@/assets/icons/searchbox_icon.png")}
+            className="h-5 w-4"
+          />
         </View>
       </View>
 

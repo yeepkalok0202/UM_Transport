@@ -1,12 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, TouchableOpacity, Text, Image, Alert } from "react-native";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { useRouter, useGlobalSearchParams } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import FareDetails from '../../components/ui/fare_details';
 import axios from 'axios'; 
-import "nativewind";
-import '../../global.css';
+import FareDetails from "@/components/ui/FareDetails";
+import DriverDetails from "@/components/ui/DriverDetails";
+import ArrivalDetails from "@/components/ui/ArrivalDetails";
+
+export default function BookRideScreen() {
+  const [isBooked, setIsBooked] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isDriverFound, setIsDriverFound] = useState(false);
+  const [isArrived, setIsArrived] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+    
+  const { startPoint: rawStartPoint, endPoint: rawEndPoint, startAddress: rawStartAddress, endAddress: rawEndAddress } = useGlobalSearchParams();
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(true);
+  const [startCoordinates, setStartCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [endCoordinates, setEndCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
+  const mapRef = useRef<MapView | null>(null); // Create a reference to the MapView
+  const startPoint = getAsString(rawStartPoint); // Ensure it's a string
+  const endPoint = getAsString(rawEndPoint); // Ensure it's a string
+  const startAddress = getAsString(rawStartAddress); // Ensure it's a string
+  const endAddress = getAsString(rawEndAddress); // Ensure it's a string
+    
+  useEffect(() => {
+    console.log("Booking status changed: ", isBooked);
+
+    if (isBooked) {
+      const searchTimer = setTimeout(() => {
+        console.log("Searching for driver...");
+        setIsSearching(true);
+        const driverTimer = setTimeout(() => {
+          console.log("Driver found!");
+          setIsDriverFound(true);
+          const arrivedTimer = setTimeout(() => {
+            console.log("Destination reached!");
+            setIsArrived(true);
+            setModalVisible(true);
+            clearTimeout(arrivedTimer);
+          }, 8000);
+        }, 3000);
+        return () => clearTimeout(driverTimer);
+      }, 3000);
+      return () => clearTimeout(searchTimer);
+    }
+  }, [isBooked]);
+
+  useEffect(() => {
+    console.log("modalVisible: ", modalVisible);
+  }, [modalVisible]);
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY';
 
@@ -23,18 +68,6 @@ export const unstable_settings = {
 
 
 export default function BookRideScreen() {
-  const router = useRouter();
-  const [isMounted, setIsMounted] = useState(true);
-  const { startPoint: rawStartPoint, endPoint: rawEndPoint, startAddress: rawStartAddress, endAddress: rawEndAddress } = useGlobalSearchParams();
-  const [isBooked, setIsBooked] = useState(false);
-  const [startCoordinates, setStartCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
-  const [endCoordinates, setEndCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
-  const mapRef = useRef<MapView | null>(null); // Create a reference to the MapView
-  const startPoint = getAsString(rawStartPoint); // Ensure it's a string
-  const endPoint = getAsString(rawEndPoint); // Ensure it's a string
-  const startAddress = getAsString(rawStartAddress); // Ensure it's a string
-  const endAddress = getAsString(rawEndAddress); // Ensure it's a string
-
   // Cleanup logic to unmount the screen
   useFocusEffect(
     React.useCallback(() => {
@@ -52,7 +85,6 @@ export default function BookRideScreen() {
     return null; // Avoid rendering anything if unmounted
   }
 
-  // Function to toggle booking state
   const handleBookingToggle = () => {
     setIsBooked(!isBooked);
   };
@@ -123,11 +155,13 @@ export default function BookRideScreen() {
     }, []) // Empty dependency array ensures it runs once when focused
   );
   
-
   return (
     <View style={styles.container}>
-
-      {/* Map Section */}
+      <ArrivalDetails
+        destinationLocation={destinationLocation}
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
       <MapView
         ref={(ref) => (mapRef.current = ref)}
         style={styles.map}
@@ -146,6 +180,7 @@ export default function BookRideScreen() {
           }
         }}
       >
+
         {/* Start Marker */}
         {startCoordinates && startCoordinates.latitude && startCoordinates.longitude &&(
           <Marker
@@ -198,30 +233,54 @@ export default function BookRideScreen() {
             strokeWidth={4}
           />
         )}
+        <View
+          style={{
+            flex: 1,
+            padding: 16,
+          }}
+        >
+          {!isDriverFound && !isArrived && (
+            <FareDetails
+              isSearching={isSearching}
+              startLocation={startLocation}
+              destinationLocation={destinationLocation}
+              fareAmount="RM5.00"
+              walletAmount="RM50.00"
+              timeEstimate="10 mins"
+              paymentMethod="Siswacard"
+            />
+          )}
+          {isDriverFound && !isArrived && (
+            <DriverDetails
+              startLocation={startLocation}
+              destinationLocation={destinationLocation}
+              fareAmount="RM5.00"
+              timeEstimate={5}
+              paymentMethod="Siswacard"
+              driverName="Muhammad Ali bin Jamun"
+              driverMatric="22005689"
+              driverFaculty="Faculty of Science"
+              driverCarPlate="RMB8964"
+              driverCarModel="White - Proton Saga"
+            />
+          )}
+        </View>
       </MapView>
 
-      {/* Fare Details Section */}
-      <FareDetails
-        isBooked={isBooked}
-        startPoint={startPoint}
-        startAddress={startAddress}
-        endPoint={endPoint}
-        endAddress={endAddress}
-      />
-
-      {/* Book Now Button */}
-      <TouchableOpacity
-        style={[
-          styles.bookNowButton,
-          { backgroundColor: isBooked ? '#808080' : '#4285F4' },
-        ]}
-        activeOpacity={0.85}
-        onPress={handleBookingToggle}
-      >
-        <Text style={styles.bookNowText}>
-          {isBooked ? 'Cancel Booking' : 'Book Now'}
-        </Text>
-      </TouchableOpacity>
+      {!isSearching && (
+        <TouchableOpacity
+          style={[
+            styles.bookNowButton,
+            { backgroundColor: isBooked ? "#808080" : "#4285F4" },
+          ]}
+          onPress={handleBookingToggle}
+        >
+          <Text style={styles.bookNowText}>
+            {isBooked ? "Cancel Booking" : "Book Now"}
+          </Text>
+        </TouchableOpacity>
+      )}
+      
     </View>
   );
 }
@@ -235,20 +294,18 @@ const styles = StyleSheet.create({
     flex: 1, // Map takes the entire screen space
   },
   bookNowButton: {
-    position: 'absolute',
-    bottom: 20, 
+    position: "absolute",
+    bottom: 20,
     left: 16,
     right: 16,
-    backgroundColor: '#4285F4',
     padding: 16,
-    borderRadius: 10,
-    alignItems: 'center',
-    zIndex: 10, 
+    borderRadius: 20,
+    alignItems: "center",
     elevation: 5,
   },
   bookNowText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontWeight: "bold",
+    color: "#FFFFFF",
   },
 });
