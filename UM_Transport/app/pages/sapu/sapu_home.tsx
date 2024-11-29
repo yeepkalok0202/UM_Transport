@@ -6,9 +6,11 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 import axios from "axios";
 import { useRouter, useGlobalSearchParams } from "expo-router";
+import SafeView from "@/components/ui/SafeView";
 
 // Define the type for a destination
 type Destination = {
@@ -87,7 +89,8 @@ export default function SapuHomeScreen() {
   );
 
   return (
-    <View className="flex-1 bg-white">
+    <SafeView>
+      <StatusBar barStyle="light-content" backgroundColor="#4285F4" />
       {/* Header Section */}
       <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
         <TouchableOpacity
@@ -139,6 +142,6 @@ export default function SapuHomeScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ marginTop: 60, paddingHorizontal: 16 }}
       />
-    </View>
+    </SafeView>
   );
 }

@@ -13,7 +13,6 @@ export default function SapuLayout() {
         options={{
           headerTitle: "Book a Ride",
           headerShown: true,
-          headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
           headerTitleStyle: {
             fontWeight: "bold",
