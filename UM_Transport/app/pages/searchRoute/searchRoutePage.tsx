@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon, Searchbar } from "react-native-paper";
 import { useRouter } from "expo-router";
 import SuggestionBottom from "@/components/ui/SuggestionBottom";
+import MapView from "react-native-maps";
 
 export default function SearchRoutePage() {
   const router = useRouter();
@@ -14,6 +15,12 @@ export default function SearchRoutePage() {
     { id: "4", name: "T817", speed: 15.3 },
   ];
 
+  const INITIAL_REGION = {
+    latitude: 3.12834,
+    longitude: 101.65099,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
+  };
   return (
     <View style={{ padding: 16, backgroundColor: "white", flex: 1 }}>
       <Searchbar
@@ -25,17 +32,23 @@ export default function SearchRoutePage() {
         onChangeText={setSearchQuery}
         value={searchQuery}
       ></Searchbar>
-      <Text style={styles.text}>Live location of buses on map</Text>
       <TouchableOpacity
         activeOpacity={0.6}
         onPress={() => {
           router.push("/pages/searchRoute/busMap");
         }}
       >
-        <Image
-          source={require("@/assets/images/mapPlaceHolder.png")}
-          style={{ borderRadius: 12, marginVertical: 16, alignSelf: "center" }}
-        />
+        <Text style={styles.text}>Live location of buses on map</Text>
+
+        <MapView
+          style={{
+            flexDirection: "row",
+            height: 270,
+            width: "100%",
+            justifyContent: "center",
+          }}
+          initialRegion={INITIAL_REGION}
+        ></MapView>
       </TouchableOpacity>
       <Text style={styles.text}>Buses on service</Text>
       <View style={{ marginTop: 32 }}>

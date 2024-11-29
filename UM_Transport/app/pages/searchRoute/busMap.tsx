@@ -50,5 +50,3 @@ const busMap = () => {
 };
 
 export default busMap;
-
-const styles = StyleSheet.create({});
