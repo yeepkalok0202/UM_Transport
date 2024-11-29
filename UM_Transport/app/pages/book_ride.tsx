@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
-import { useRouter, useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import FareDetails from "@/components/ui/FareDetails";

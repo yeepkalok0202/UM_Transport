@@ -4,16 +4,18 @@ import { PaperProvider } from "react-native-paper";
 
 export default function RootLayout() {
   return (
-    <PaperProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="index"
-          options={{
-            headerShown: true,
-          }}
-        />
-        <Stack.Screen name="pages" />
-      </Stack>
-    </PaperProvider>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
+      <PaperProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: true,
+            }}
+          />
+          <Stack.Screen name="pages" />
+        </Stack>
+      </PaperProvider>
+    </SafeAreaView>
   );
 }

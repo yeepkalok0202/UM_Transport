@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Animated, View, Text, Image, StyleSheet } from "react-native";
+import LocationDetails from "./LocationDetails";
 
 interface FareDetailsProps {
   isSearching: boolean;
@@ -67,52 +68,12 @@ const FareDetails: React.FC<FareDetailsProps> = ({
               </View>
             </View>
             <View style={styles.divider} />
+            <LocationDetails
+              startLocation={startLocation}
+              destinationLocation={destinationLocation}
+            />
           </>
         )}
-        <View
-          style={{
-            flexDirection: "column",
-            alignSelf: "flex-start",
-          }}
-        >
-          <View style={styles.locationRow}>
-            <Image
-              source={require("@/assets/icons/start_point_icon.png")}
-              style={styles.startIcon}
-            />
-            <View style={{ flexDirection: "column" }}>
-              <Text style={styles.locationName}>{startLocation.name}</Text>
-              <Text style={styles.locationAddress}>
-                {startLocation.address}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              marginLeft: 10,
-              marginBottom: 4,
-            }}
-          >
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-            <View style={styles.dot} />
-          </View>
-          <View style={styles.destinationLocationRow}>
-            <Image
-              source={require("@/assets/icons/end_point_icon.png")}
-              style={styles.endIcon}
-            />
-            <View style={styles.locationTextContainer}>
-              <Text style={styles.locationName}>
-                {destinationLocation.name}
-              </Text>
-              <Text style={styles.locationAddress}>
-                {destinationLocation.address}
-              </Text>
-            </View>
-          </View>
-        </View>
       </View>
       <View style={styles.payment}>
         <Image
@@ -132,6 +93,7 @@ const FareDetails: React.FC<FareDetailsProps> = ({
             <Text style={styles.paymentAmount}>{walletAmount}</Text>
           )}
         </View>
+
         {!isSearching ? (
           <Image
             source={require("@/assets/icons/other_payment.png")}
@@ -211,7 +173,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#E0E0E0",
-    marginVertical: 16,
+    marginBottom: 16,
   },
 
   locationTextContainer: {
