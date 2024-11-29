@@ -8,6 +8,7 @@ import polyline from "@mapbox/polyline";
 import FareDetails from "@/components/ui/sapu/FareDetails";
 import DriverDetails from "@/components/ui/sapu/DriverDetails";
 import ArrivalDetails from "@/components/ui/sapu/ArrivalDetails";
+import { calculateFare, isPeakHour } from "@/utils/fareCalculator";
 
 export default function BookRideScreen() {
   const [isBooked, setIsBooked] = useState(false);
@@ -19,7 +20,7 @@ export default function BookRideScreen() {
     { latitude: number; longitude: number }[]
   >([]);
   const [routeDuration, setRouteDuration] = useState<string>("Loading...");
-
+  const [fare, setFare] = useState<number>(0);
   const {
     startPoint: rawStartPoint,
     endPoint: rawEndPoint,
@@ -210,12 +211,30 @@ export default function BookRideScreen() {
             latitude: lat,
             longitude: lng,
           }));
-        // Extract duration from the first leg
-        const duration = route.legs[0]?.duration?.text || "Unknown duration";
+
+        // Extract duration and distance
+        const leg = route.legs[0];
+        const distance = leg.distance.value / 1000; // Convert meters to kilometers
+        const duration = leg.duration.text || "Unknown duration";
+        const durationInTraffic = leg.duration_in_traffic?.value || leg.duration.value;
 
         console.log("Route duration:", duration);
         setRouteCoordinates(decodedCoordinates); // Set decoded coordinates
         setRouteDuration(duration);
+
+         // Determine peak hour
+         const peakHour = isPeakHour(leg.duration.value, durationInTraffic);
+
+         // Calculate fare
+         const calculatedFare = calculateFare({
+           startPoint,
+           endPoint,
+           distance,
+           isPeakHour: peakHour,
+         });
+ 
+         console.log(`Calculated Fare: RM${calculatedFare}`); // Add this log
+         setFare(calculatedFare); // Set calculated fare
       } else {
         Alert.alert("Error", "No routes found.");
       }
@@ -322,7 +341,7 @@ export default function BookRideScreen() {
               isSearching={isSearching}
               startLocation={startLocation}
               destinationLocation={destinationLocation}
-              fareAmount="RM5.00"
+              fareAmount={`RM${fare}`}
               walletAmount="RM50.00"
               timeEstimate={routeDuration}
               paymentMethod="Siswacard"
@@ -332,7 +351,7 @@ export default function BookRideScreen() {
             <DriverDetails
               startLocation={startLocation}
               destinationLocation={destinationLocation}
-              fareAmount="RM5.00"
+              fareAmount={`RM${fare}`}
               timeEstimate={5}
               paymentMethod="Siswacard"
               driverName="Muhammad Ali bin Jamun"
