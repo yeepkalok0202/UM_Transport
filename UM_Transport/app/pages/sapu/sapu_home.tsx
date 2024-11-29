@@ -22,28 +22,27 @@ export default function SapuHomeScreen() {
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const router = useRouter();
   const { startPoint, startAddress } = useGlobalSearchParams(); // Get the starting point from global search params
-  const [endPoint, setEndPoint] = useState(''); // State for the selected end point
+  const [endPoint, setEndPoint] = useState(""); // State for the selected end point
 
-  const GOOGLE_MAPS_API_KEY = 'AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY';
+  const GOOGLE_MAPS_API_KEY = "AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY";
 
   // Function to navigate to Book Ride page with both starting and end points
   const navigateToBookRide = (endPoint: string, endAddress: string) => {
     router.push({
-      pathname: '/pages/book_ride',
+      pathname: "/pages/sapu/book_ride",
       params: {
-        startPoint: startPoint || 'KK8, UM',
-        startAddress: startAddress || 'Not Set',
-        endPoint: endPoint || 'Not Set',
-        endAddress: endAddress || 'Not Set'
+        startPoint: startPoint || "KK8, UM",
+        startAddress: startAddress || "Not Set",
+        endPoint: endPoint || "Not Set",
+        endAddress: endAddress || "Not Set",
       },
     });
   };
 
   // Function to navigate to Starting Point selection page
   const handleLocationPress = () => {
-    router.push("/pages/starting_point");
+    router.push("/pages/sapu/starting_point");
   };
-
 
   // Function to fetch places using Google Places API
   const fetchPlaces = async (query: string) => {
@@ -58,7 +57,7 @@ export default function SapuHomeScreen() {
       }));
       setDestinations(places);
     } catch (error) {
-      console.error('Error fetching places:', error);
+      console.error("Error fetching places:", error);
     }
   };
 
@@ -76,7 +75,10 @@ export default function SapuHomeScreen() {
       className="flex-row items-center mb-4 mx-2"
       onPress={() => navigateToBookRide(item.name, item.address)} // Pass the selected destination as the end point
     >
-      <Image source={require('@/assets/icons/destination_icon.png')} className="ml-1 mr-5 h-10 w-10" />
+      <Image
+        source={require("@/assets/icons/destination_icon.png")}
+        className="ml-1 mr-5 h-10 w-10"
+      />
       <View className="flex-1">
         <Text className="text-base font-bold text-gray-900">{item.name}</Text>
         <Text className="text-sm text-gray-600 truncate">{item.address}</Text>
@@ -88,17 +90,23 @@ export default function SapuHomeScreen() {
     <View className="flex-1 bg-white">
       {/* Header Section */}
       <View className="flex-row items-start justify-between bg-[#4285F4] px-5 pt-10 h-32">
-        <TouchableOpacity onPress={handleLocationPress} className="flex-row items-center flex-1">
-          <Image source={require('@/assets/icons/location.png')} className="h-5 w-5 mr-3" />
+        <TouchableOpacity
+          onPress={handleLocationPress}
+          className="flex-row items-center flex-1"
+        >
+          <Image
+            source={require("@/assets/icons/location.png")}
+            className="h-5 w-5 mr-3"
+          />
           <Text
             className="text-white text-lg font-bold"
             style={{
-              flexWrap: 'wrap', // Allow wrapping
-              maxWidth: '80%', // Constrain width for wrapping
+              flexWrap: "wrap", // Allow wrapping
+              maxWidth: "80%", // Constrain width for wrapping
               lineHeight: 20, // Adjust line height for readability
             }}
           >
-            {startPoint || 'KK8, UM'}
+            {startPoint || "KK8, UM"}
           </Text>
         </TouchableOpacity>
         <Image
@@ -106,7 +114,6 @@ export default function SapuHomeScreen() {
           className="h-9 w-9 rounded-full bg-white"
         />
       </View>
-
 
       {/* Search Box */}
       <View className="absolute top-24 left-6 right-6 z-10">

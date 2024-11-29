@@ -8,7 +8,7 @@ export default function Index() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/pages/sapu_home");
+    router.push("/pages/sapu/sapu_home");
   };
 
   return (

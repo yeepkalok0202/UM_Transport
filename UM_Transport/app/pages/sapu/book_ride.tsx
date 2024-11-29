@@ -5,9 +5,9 @@ import { useGlobalSearchParams } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import polyline from "@mapbox/polyline";
-import FareDetails from "@/components/ui/FareDetails";
-import DriverDetails from "@/components/ui/DriverDetails";
-import ArrivalDetails from "@/components/ui/ArrivalDetails";
+import FareDetails from "@/components/ui/sapu/FareDetails";
+import DriverDetails from "@/components/ui/sapu/DriverDetails";
+import ArrivalDetails from "@/components/ui/sapu/ArrivalDetails";
 
 export default function BookRideScreen() {
   const [isBooked, setIsBooked] = useState(false);
@@ -15,7 +15,9 @@ export default function BookRideScreen() {
   const [isDriverFound, setIsDriverFound] = useState(false);
   const [isArrived, setIsArrived] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [routeCoordinates, setRouteCoordinates] = useState<{ latitude: number; longitude: number }[]>([]);
+  const [routeCoordinates, setRouteCoordinates] = useState<
+    { latitude: number; longitude: number }[]
+  >([]);
   const [routeDuration, setRouteDuration] = useState<string>("Loading...");
 
   const {
@@ -104,7 +106,10 @@ export default function BookRideScreen() {
   };
 
   // Function to fetch coordinates using Places API
-  const fetchPlaceCoordinates = async (placeName: string, isStartPoint: boolean) => {
+  const fetchPlaceCoordinates = async (
+    placeName: string,
+    isStartPoint: boolean
+  ) => {
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
       placeName
     )}&key=${GOOGLE_MAPS_API_KEY}`;
@@ -194,17 +199,18 @@ export default function BookRideScreen() {
 
     const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${startCoordinates.latitude},${startCoordinates.longitude}&destination=${endCoordinates.latitude},${endCoordinates.longitude}&key=${GOOGLE_MAPS_API_KEY}`;
 
-    
     try {
       const response = await axios.get(url);
       if (response.data.routes.length) {
         const route = response.data.routes[0];
         const points = response.data.routes[0].overview_polyline.points;
-        const decodedCoordinates = polyline.decode(points).map(([lat, lng]) => ({
-          latitude: lat,
-          longitude: lng,
-        }));
-         // Extract duration from the first leg
+        const decodedCoordinates = polyline
+          .decode(points)
+          .map(([lat, lng]) => ({
+            latitude: lat,
+            longitude: lng,
+          }));
+        // Extract duration from the first leg
         const duration = route.legs[0]?.duration?.text || "Unknown duration";
 
         console.log("Route duration:", duration);
