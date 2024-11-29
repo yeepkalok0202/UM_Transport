@@ -26,12 +26,14 @@ const busMap = () => {
   };
   const bus = [
     {
+      title: "T815",
       latitude: 3.132334,
       longitude: 101.659369,
       direction: 320,
     },
-    { latitude: 3.123022, longitude: 101.65133, direction: 130 },
+    { title: "T815", latitude: 3.123022, longitude: 101.65133, direction: 130 },
     {
+      title: "UM Bus AB",
       latitude: 3.130582,
       longitude: 101.652225,
       direction: 250,
@@ -67,6 +69,7 @@ const busMap = () => {
               latitude: bus.latitude,
               longitude: bus.longitude,
             }}
+            title={bus.title}
             image={require("@/assets/icons/bus.png")}
             style={{ transform: [{ rotate: `${bus.direction}deg` }] }}
           />

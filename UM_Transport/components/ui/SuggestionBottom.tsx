@@ -18,7 +18,7 @@ interface SuggestionsBottomProps {
 }
 
 const SuggestionBottom: React.FC<SuggestionsBottomProps> = ({ bus, sapu }) => {
-  const snapPoints = useMemo(() => ["16%", "65%"], []);
+  const snapPoints = useMemo(() => ["16%", "60%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const [activeContent, setActiveContent] = useState("suggestion");
