@@ -8,7 +8,13 @@ const BusMap = () => {
   const mapRef = useRef<MapView>(null);
   const route = useRoute();
   const { params } = route;
-  const { latitude, longitude, name, speed } = params as { latitude: Double; longitude: Double; name: string; speed: number } || {}; // Ensure safety if params are undefined
+  const { latitude, longitude, name, speed } =
+    (params as {
+      latitude: Double;
+      longitude: Double;
+      name: string;
+      speed: number;
+    }) || {}; // Ensure safety if params are undefined
   const [mapReady, setMapReady] = useState(false);
 
   const INITIAL_REGION = {
@@ -45,7 +51,6 @@ const BusMap = () => {
       direction: 250,
     },
   ];
-  
 
   // Effect to animate the camera to a specific location once the map is ready
   useEffect(() => {
@@ -66,7 +71,7 @@ const BusMap = () => {
       <MapView
         ref={mapRef}
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
+        // provider={PROVIDER_GOOGLE}
         showsUserLocation
         initialRegion={INITIAL_REGION}
         onMapReady={() => setMapReady(true)}
