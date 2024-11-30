@@ -17,6 +17,7 @@ import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import Timetable from "@/components/home/Timetable";
 import RideCard from "@/components/home/RideCard";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SafeView from "@/components/common/SafeView";
 
 const timetableData = [
   {
@@ -51,6 +52,7 @@ const transportChoice = [
     name: "Public Transport",
     cardColor: "#FCF1FE",
     image: require("@/assets/images/Home-Bus.png"),
+    long: true,
     route: () => {
       router.push("/bus-tracking");
     },
@@ -60,6 +62,7 @@ const transportChoice = [
     name: "Ride-hailing",
     cardColor: "#FCFFEE",
     image: require("@/assets/images/Home-SAPU.png"),
+    long: true,
     route: () => {
       router.push("/sapu");
     },
@@ -69,6 +72,7 @@ const transportChoice = [
     name: "Travel Suggestion",
     cardColor: "#E9F3FF",
     image: require("@/assets/images/Home-TravelSuggestion.png"),
+    long: false, 
     route: () => {
       router.push("/suggestion");
     },
@@ -78,6 +82,7 @@ const transportChoice = [
     name: "Search Route",
     cardColor: "#F1FFEC",
     image: require("@/assets/images/Home-Search.png"),
+    long: false,
     route: () => {
       router.push("/search-route");
     },
@@ -88,7 +93,7 @@ export default function Index() {
   const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
-    <SafeAreaView edges={["top", "left", "right"]} className="h-full">
+    <SafeView>
       <ScrollView style={styles.container}>
         {/* Today Timetable  */}
         <View>
@@ -138,6 +143,13 @@ export default function Index() {
                     backgroundColor: item.cardColor,
                     justifyContent: "center",
                     alignItems: "center",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    elevation: 5,
                   }}
                 >
                   <Text
@@ -146,10 +158,23 @@ export default function Index() {
                       color: "#002266",
                       fontWeight: "bold",
                       zIndex: 1,
+                      textAlign: "center",
+
                     }}
                   >
                     {item.name}
                   </Text>
+
+                  <Image
+                    source={item.image}
+                    style={{
+                      width: item.long ? 100 : 80,
+                      height: item.long? 40: 50,
+                      position: "absolute",
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
                 </View>
               </TouchableOpacity>
             ))}
@@ -206,7 +231,7 @@ export default function Index() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </SafeAreaView>
+    </SafeView>
   );
 }
 
