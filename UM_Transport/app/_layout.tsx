@@ -10,7 +10,7 @@ export default function RootLayout() {
           <Stack.Screen
             name="index"
             options={{
-              headerShown: true,
+              // headerShown: true,
             }}
           />
           <Stack.Screen name="pages" />

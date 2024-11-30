@@ -3,7 +3,7 @@ import React from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Icon } from "react-native-paper";
 import { router, useRouter } from "expo-router";
-import { getUri } from "axios";
+// import { getUri } from "axios";
 
 interface BusContentProps {
   bus: {
