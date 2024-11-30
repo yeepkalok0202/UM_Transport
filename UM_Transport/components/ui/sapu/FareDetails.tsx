@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import React, { useRef, useEffect } from "react";
 import { Animated, View, Text, Image, StyleSheet } from "react-native";
 import LocationDetails from "./LocationDetails";
+import {
+  Entypo,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 interface FareDetailsProps {
   isSearching: boolean;
@@ -46,10 +52,10 @@ const FareDetails: React.FC<FareDetailsProps> = ({
       ]}
     >
       {isSearching && (
-        <View style={styles.searchingContainer}>
+        <View style={styles.searchingContainer} className="gap-3">
           <Image
+            className="h-[25] w-[25]"
             source={require("@/assets/icons/blue_car.png")}
-            style={styles.icon}
           />
           <Text style={styles.lookingText}>Looking for a ride...</Text>
         </View>
@@ -59,12 +65,19 @@ const FareDetails: React.FC<FareDetailsProps> = ({
           <>
             <View style={styles.fareRow}>
               <Text style={styles.fareAmount}>{fareAmount}</Text>
-              <View style={styles.fareTimeContainer}>
-                <Image
-                  source={require("@/assets/icons/clock_icon.png")}
-                  style={styles.icon}
-                />
-                <Text style={styles.fareTime}>{timeEstimate}</Text>
+              <View className="flex-row max-w-32 bg-[#EFF3FE] rounded-full pr-1 items-center">
+                <View className="bg-[#D2E2ED] p-3 justify-center items-center rounded-full">
+                  <MaterialCommunityIcons
+                    name="car-clock"
+                    size={16}
+                    color={"#419CE3"}
+                  />
+                </View>
+                <View className="h-full items-center flex-1">
+                  <Text className="text-[14px] font-semibold">
+                    {timeEstimate}
+                  </Text>
+                </View>
               </View>
             </View>
             <View style={styles.divider} />
@@ -75,12 +88,10 @@ const FareDetails: React.FC<FareDetailsProps> = ({
           destinationLocation={destinationLocation}
         />
       </View>
-      <View style={styles.payment}>
-        <Image
-          source={require("@/assets/icons/payment_icon.png")}
-          style={styles.paymentIcon}
-        />
-        <View style={styles.paymentTextContainer}>
+
+      <View className="bg-white border-t-[5px] border-[#EFF3FE] flex-row items-center rounded-b-[12] p-4 gap-5">
+        <FontAwesome5 name="credit-card" size={30} color={"#D3E1F1"} />
+        <View className="flex-1">
           <Text
             style={[
               styles.paymentText,
@@ -95,10 +106,7 @@ const FareDetails: React.FC<FareDetailsProps> = ({
         </View>
 
         {!isSearching ? (
-          <Image
-            source={require("@/assets/icons/other_payment.png")}
-            style={styles.paymentIcon}
-          />
+          <Entypo name="dots-three-horizontal" size={30} color={"#D3E1F1"} />
         ) : (
           <Text style={[styles.paymentAmount, { marginRight: 16 }]}>
             {fareAmount}
