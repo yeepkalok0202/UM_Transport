@@ -3,7 +3,7 @@ import {
   JourneyPlanInterface,
   PlaceOrderInterface,
   PreOrderResponse,
-} from "@/types/sapu-types";
+} from "@/types/interfaces/sapu-types";
 import { handleError } from "@/utils/api-utils";
 
 export const createPreOrderAPI = async (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import LocationDetails from "./LocationDetails";
+import DriverPersonalInfo from "@/components/sapu/DriverPersonalInfo";
+import OrderDetails from "@/components/sapu/OrderDetails";
 
 interface DriverDetailsProps {
   startLocation: {
@@ -73,22 +74,23 @@ const DriverDetails: React.FC<DriverDetailsProps> = ({
       </TouchableOpacity>
       <View style={styles.containerTop}>
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
+          className={`flex-row justify-between ${
+            !isArriving ? "items-start" : "items-center"
+          }`}
         >
-          <Text style={{ fontSize: 16, fontWeight: "500" }}>
+          <Text className="text-[16px] font-medium">
             {isArriving ? "Estimated arriving at" : "Driver is on the way"}
           </Text>
-          <Text style={{ textAlign: "right", fontSize: 16, fontWeight: "500" }}>
-            {timeEstimate + " mins" + "\n"}
+          <View className="justify-center">
+            <Text className="text-right text-[16px] font-medium">
+              {timeEstimate + " mins"}
+            </Text>
             {!isArriving && (
-              <Text style={{ fontSize: 14, color: "#9A9A9A" }}>
+              <Text className="text-[14px] text-[#9A9A9A]">
                 Arriving at {formattedTime}
               </Text>
             )}
-          </Text>
+          </View>
         </View>
       </View>
       <View
@@ -97,78 +99,22 @@ const DriverDetails: React.FC<DriverDetailsProps> = ({
           { borderTopWidth: 0, borderBottomWidth: 0 },
         ]}
       >
-        <View style={{ flexDirection: "column" }}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              style={{
-                height: 60,
-                width: 60,
-                borderRadius: 100,
-                marginBottom: 8,
-              }}
-              source={require("@/assets/icons/driver.png")}
-            ></Image>
-            <Text style={{ textAlign: "right", fontSize: 24 }}>
-              {driverCarPlate + "\n"}
-              <Text style={{ fontSize: 14, color: "#9A9A9A" }}>
-                {driverCarModel}
-              </Text>
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
-            <Text style={{ fontSize: 16, fontWeight: "500", lineHeight: 20 }}>
-              {driverName + "\n"}
-              <Text style={{ fontSize: 12, color: "#9A9A9A" }}>
-                {driverMatric} | {driverFaculty}
-              </Text>
-            </Text>
-            <TouchableOpacity
-              style={{
-                marginLeft: 10,
-                borderColor: "#A9BDDE",
-                borderWidth: 1.5,
-                borderRadius: 10,
-              }}
-              onPress={() => {}}
-            >
-              <Image
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 0,
-                }}
-                source={require("@/assets/icons/call.png")}
-              ></Image>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-      <View style={styles.containerMiddle}>
-        <LocationDetails
-          startLocation={startLocation}
-          destinationLocation={destinationLocation}
+        <DriverPersonalInfo
+          driverFaculty={driverFaculty}
+          driverName={driverName}
+          driverMatric={driverMatric}
+          driverCarModel={driverCarModel}
+          driverCarPlate={driverCarPlate}
         />
-        <View style={styles.payment}>
-          <Image
-            source={require("@/assets/icons/payment_icon.png")}
-            style={styles.paymentIcon}
-          />
-          <View style={styles.paymentTextContainer}>
-            <Text style={styles.paymentText}>{paymentMethod}</Text>
-          </View>
-          <Text style={styles.paymentAmount}>{fareAmount}</Text>
-        </View>
       </View>
+
+      <OrderDetails
+        startLocation={startLocation}
+        destinationLocation={destinationLocation}
+        paymentMethod={paymentMethod}
+        fareAmount={fareAmount}
+      />
+
       <TouchableOpacity
         activeOpacity={0.85}
         style={[styles.containerBottom, styles.shadow]}
@@ -199,9 +145,8 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   containerTop: {
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#F4F4F4",
     padding: 16,
-    paddingBottom: 8,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -219,32 +164,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     alignItems: "center",
-  },
-  payment: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 16,
-  },
-  paymentIcon: {
-    width: 30,
-    height: 30,
-    marginRight: 12,
-  },
-  paymentTextContainer: {
-    flex: 1,
-    flexDirection: "column",
-  },
-  paymentText: {
-    fontSize: 16,
-    color: "black",
-  },
-  paymentAmount: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000000",
-    marginTop: 4,
-    marginRight: 16,
   },
   cancel: {
     fontSize: 16,

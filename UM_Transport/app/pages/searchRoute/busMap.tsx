@@ -1,10 +1,15 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useRef } from "react";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE, Camera } from "react-native-maps";
+import { useRoute } from "@react-navigation/native";
+import { Double } from "react-native/Libraries/Types/CodegenTypes";
 
-const busMap = () => {
-  const mapRef = useRef<MapView | null>(null);
-  const [mapReady, setMapReady] = React.useState(false);
+const BusMap = () => {
+  const mapRef = useRef<MapView>(null);
+  const route = useRoute();
+  const { params } = route;
+  const { latitude, longitude, name, speed } = params as { latitude: Double; longitude: Double; name: string; speed: number } || {}; // Ensure safety if params are undefined
+  const [mapReady, setMapReady] = useState(false);
 
   const INITIAL_REGION = {
     latitude: 3.12834,
@@ -12,7 +17,8 @@ const busMap = () => {
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   };
-  const fsktm = {
+
+  const FSKTM_LOCATION = {
     latitude: 3.12834,
     longitude: 101.65099,
     latitudeDelta: 0.005,
@@ -38,45 +44,53 @@ const busMap = () => {
       longitude: 101.652225,
       direction: 250,
     },
-  ];
+  ];s
+  
 
+  // Effect to animate the camera to a specific location once the map is ready
   useEffect(() => {
-    if (mapReady) {
-      mapRef.current?.animateToRegion(um, 2000);
+    if (mapReady && mapRef.current) {
+      const camera: Camera = {
+        center: FSKTM_LOCATION,
+        pitch: 0,
+        heading: 0,
+        altitude: 0,
+        zoom: 15,
+      };
+      mapRef.current.animateCamera(camera, { duration: 2000 });
     }
   }, [mapReady]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <MapView
         ref={mapRef}
-        style={{ flex: 1 }}
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        showsUserLocation
         initialRegion={INITIAL_REGION}
-        onMapReady={() => setTimeout(() => setMapReady(true), 1000)}
+        onMapReady={() => setMapReady(true)}
       >
-        <Marker
-          coordinate={{
-            latitude: fsktm.latitude,
-            longitude: fsktm.longitude,
-          }}
-          image={require("@/assets/icons/current_location.png")}
-          style={{ width: 5, height: 5 }}
-        />
-        {bus.map((bus, index) => (
+        {/* Render marker if params are provided */}
+        {/* {params && latitude && longitude && (
           <Marker
-            key={index}
-            coordinate={{
-              latitude: bus.latitude,
-              longitude: bus.longitude,
-            }}
-            title={bus.title}
-            image={require("@/assets/icons/bus.png")}
-            style={{ transform: [{ rotate: `${bus.direction}deg` }] }}
+            coordinate={{ latitude, longitude }}
+            title={name || "Bus Location"}
+            description={`Speed: ${speed || 0} km/h`}
           />
-        ))}
+        )} */}
       </MapView>
     </View>
   );
 };
 
-export default busMap;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  map: {
+    flex: 1,
+  },
+});
+
+export default BusMap;
