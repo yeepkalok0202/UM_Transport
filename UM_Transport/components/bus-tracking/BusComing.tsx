@@ -21,7 +21,6 @@ interface BusComingProps {
 }
 
 const BusComing: React.FC<BusComingProps> = ({
-  id,
   busType,
   totalTime,
   fee,

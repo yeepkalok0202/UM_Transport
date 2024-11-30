@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Icon, Searchbar } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import { useRouter } from "expo-router";
 import MapView from "react-native-maps";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -100,17 +100,6 @@ export default function SearchRoutePage() {
       ],
     },
   ];
-
-  const fsktm = {
-    latitude: 3.12834,
-    longitude: 101.65099,
-  };
-
-  const bus1 = {
-    latitude: 3.132334,
-    longitude: 101.659369,
-    direction: 320,
-  };
 
   const INITIAL_REGION = {
     latitude: 3.12848,

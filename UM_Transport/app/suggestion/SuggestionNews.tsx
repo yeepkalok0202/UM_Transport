@@ -5,7 +5,7 @@ import { View, Text, Image } from "react-native";
 import { Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function SuggestionNews({}) {
+export default function SuggestionNews() {
   const news = useLocalSearchParams();
   const router = useRouter();
   const navigateBack = () => router.back();
@@ -21,7 +21,7 @@ export default function SuggestionNews({}) {
           {news.title}
         </Title>
         <Image
-          source={{ uri: news.newsURI }}
+          source={{ uri: news.newsURI as string }}
           className="w-full h-1/2 rounded-xl mb-7"
         />
         <Text className="font-normal text-xl color-black mb-4">
