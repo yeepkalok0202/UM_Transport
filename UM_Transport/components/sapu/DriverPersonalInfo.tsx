@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import React from "react";
 
