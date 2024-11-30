@@ -1,6 +1,7 @@
 import { BUS_INFO_API_URL } from "@/constants/api-uri-constant";
-import { BusInfo } from "@/types/bus-types";
+import { BusInfo } from "@/types/interfaces/bus-types";
 import { handleError } from "@/utils/api-utils";
+import axios from 'axios';
 
 export const getSpecificBusInfoAPI = async (
   routeName: string,
@@ -36,3 +37,8 @@ export const getAllBusInfoAPI = async (token: string): Promise<BusInfo[]> => {
 
   throw await handleError(res);
 };
+
+export const prasaranaBusInfo = async (category: string): Promise<any> => {
+  const res = await axios.get(`https://api.data.gov.my/gtfs-realtime/vehicle-position/prasarana?category=${category}`);
+  return res.data;
+}

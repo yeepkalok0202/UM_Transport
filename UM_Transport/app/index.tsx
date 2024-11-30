@@ -39,6 +39,17 @@ export default function Index() {
           Route Suggestion
         </Text>
       </Pressable>
+
+      <Pressable className="bg-blue-500 p-2 rounded-2xl flex-nowrap mt-10">
+        <Text
+          className="text-white"
+          onPress={() => {
+            router.push("/pages/busTracking/BusTracking");
+          }}
+        >
+          Bus Tracking
+        </Text>
+      </Pressable>
     </View>
   );
 }

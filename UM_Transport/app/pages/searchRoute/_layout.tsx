@@ -5,7 +5,6 @@ export default function RouteLayout() {
     <Stack
       screenOptions={{
         headerShown: true,
-        headerBackButtonDisplayMode: "minimal",
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontWeight: "bold",
@@ -23,7 +22,6 @@ export default function RouteLayout() {
         options={{
           headerTitle: "Search",
           headerShown: true,
-          headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
           headerTitleStyle: {
             fontWeight: "bold",
