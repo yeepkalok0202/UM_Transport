@@ -45,9 +45,6 @@ export default function TransportSuggestion() {
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
     };
-    const handleToggleBottomSheet = () => {
-        setIsExpanded(!isExpanded);
-    };
 
     const fetchPlacesSource = async (query) => {
         try {

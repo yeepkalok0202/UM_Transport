@@ -3,6 +3,7 @@ import React from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Icon } from "react-native-paper";
 import { router, useRouter } from "expo-router";
+import { getUri } from "axios";
 
 interface BusContentProps {
   bus: {
@@ -36,7 +37,7 @@ const calculateTimes = (waitingTime: number, travelTime: number) => {
   return { departureTime, arrivalTime };
 };
 
-const money = (value: string) => {
+const Money = (value: string) => {
   return (
     <View
       style={{
@@ -52,7 +53,7 @@ const money = (value: string) => {
         >
           <Icon source="cash-multiple" size={24} color="#DB944B" />
         </View>
-        <Text style={[styles.detailsText, { fontSize: 18, marginLeft: 6 }]}>
+        <Text style={[styles.detailsText, { fontSize: 15, marginLeft: 6 }]}>
           {value}
         </Text>
       </View>
@@ -60,7 +61,7 @@ const money = (value: string) => {
   );
 };
 
-const time = (value: string) => {
+const Time = (value: string) => {
   return (
     <View
       style={{
@@ -75,7 +76,7 @@ const time = (value: string) => {
         >
           <Icon source="clock-time-nine" size={24} color="#5686E1" />
         </View>
-        <Text style={[styles.detailsText, { fontSize: 18, marginLeft: 6 }]}>
+        <Text style={[styles.detailsText, { fontSize: 15, marginLeft: 6 }]}>
           {value}
         </Text>
       </View>
@@ -105,16 +106,10 @@ const announcementContent = [
   {
     icon: "home-flood",
     title: "Unable to pass through Jalan Universiti due to flooding",
-    text: "Heavy rain has caused flooding on Jalan Universiti. Buses will be rerouted via Jalan 12/1. This may result in an additional delay of 10-15 minutes. Thank you for your understanding.",
+    newsDescription: "Heavy rain has caused flooding on Jalan Universiti. Buses will be rerouted via Jalan 12/1. This may result in an additional delay of 10-15 minutes. Thank you for your understanding.",
     color: "#5686E1",
     backgroundColor: "#E5EBF0",
-  },
-  {
-    icon: "car-traction-control",
-    title: "Delayed due to a motorbike accident at Jalan Kerinchi",
-    text: "The affected area is being cleared. Meanwhile, buses will detour through Jalan Pantai Baru. Estimated delay: 15 minutes. Thank you for your patience.",
-    color: "#DB944B",
-    backgroundColor: "#F0EBE5",
+    newsURI: "https://media.freemalaysiatoday.com/wp-content/uploads/2021/12/LRT-Masjid-jamek-fb.jpg",
   },
 ];
 
@@ -135,6 +130,7 @@ const BusContent: React.FC<BusContentProps> = ({
   return (
     <BottomSheetView style={styles.contentContainer}>
       <TouchableOpacity
+      style={{marginLeft:10, marginBottom:10}}
         onPress={() => {
           setActiveContent("suggestion");
         }}
@@ -143,20 +139,20 @@ const BusContent: React.FC<BusContentProps> = ({
           {"<"} Back
         </Text>
       </TouchableOpacity>
-      <View style={[styles.rowContainer, { justifyContent: "space-between" }]}>
+      <View style={[styles.rowContainer, { justifyContent: "space-evenly" }]}>
         <View style={{ flexDirection: "row" }}>
           <Icon source="bus" size={40} color="#5686E1" />
           <Text
             style={[styles.detailsTitle, { marginLeft: 4, marginRight: 16 }]}
           >
             {bus?.type + "\n"}
-            <Text style={[styles.detailsText, { fontSize: 24 }]}>
+            <Text style={[styles.detailsText, { fontSize: 20 }]}>
               {bus?.name}
             </Text>
           </Text>
         </View>
-        {money(bus?.fee || "")}
-        {time(bus?.time + " mins" || "")}
+        {Money(bus?.fee || "")}
+        {Time(bus?.time + " min" || "")}
       </View>
       <View style={[styles.rowContainer, { paddingHorizontal: 16 }]}>
         {markers()}
@@ -206,7 +202,7 @@ const BusContent: React.FC<BusContentProps> = ({
           }}
           onPress={() => {
             router.push({
-              pathname: "/pages/announcement",
+              pathname: "/pages/suggestion/suggestion_news",
               params: announcement,
             });
           }}
@@ -237,7 +233,7 @@ const BusContent: React.FC<BusContentProps> = ({
               numberOfLines={3}
               style={{ color: "#ADAEB9" }}
             >
-              {announcement.text}
+              {announcement.newsDescription}
             </Text>
           </View>
         </TouchableOpacity>
