@@ -5,15 +5,15 @@ A new way to know your way to travel as a student.
 
 ##  Features
 #### Module 1: Bus Info Tracking
-**Key Features** :
+**Key Features**:
 - Real-time tracking for UM and RapidKL buses.
 - Notifications for delays and cancellations.
 - Route, schedule, and pricing details.
 
-**Outcome** : Students can plan and track their bus journeys with greater reliability.
+**Outcome**: Students can plan and track their bus journeys with greater reliability.
 
 #### Module 2: SAPU System
-**Key Features** :
+**Key Features**:
 - Consistent pricing model based on base rate + traffic/distance.
 - Visibility of nearby drivers and estimated wait times.
 - Real-time driver tracking after booking.
@@ -21,12 +21,12 @@ A new way to know your way to travel as a student.
 
 **Outcome**: Transparent, efficient, and fair ride-sharing experience.
 
-##### Module 3: Transport Suggestion Engine
-**Key Features** :
+#### Module 3: Transport Suggestion Engine
+**Key Features**:
 - Compare options (UM Bus, SAPU, RapidKL, etc.) based on time, cost, and comfort.
 - Route planning for optimal travel within and around UM.
 
-**Outcome** : Students can make informed transport decisions.
+**Outcome**: Students can make informed transport decisions.
 
 ## Solution Architecture
 <img width="635" alt="image" src="https://github.com/user-attachments/assets/900320c7-3843-4d14-835b-6115e237d2b2">
