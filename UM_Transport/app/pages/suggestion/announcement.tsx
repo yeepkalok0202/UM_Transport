@@ -10,10 +10,10 @@ const Announcement = ({}) => {
       <Text style={{ fontSize: 28, fontWeight: "600", marginBottom: 32 }}>
         {announcement.title}
       </Text>
-      <Image
+      {/* <Image
         style={{ marginBottom: 32 }}
         source={require("@/assets/images/announcementBus.png")}
-      />
+      /> */}
       <Text style={{ fontSize: 22, fontWeight: "400" }}>
         {announcement.text}
       </Text>
@@ -22,5 +22,3 @@ const Announcement = ({}) => {
 };
 
 export default Announcement;
-
-const styles = StyleSheet.create({});
