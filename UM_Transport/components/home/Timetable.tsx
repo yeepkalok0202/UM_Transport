@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 interface TimetableProps {
   id: number;
@@ -9,7 +9,6 @@ interface TimetableProps {
   location: string;
   icon: React.ReactNode;
   iconBackground?: string;
-  onTimetablePress?: () => void;
 }
 
 const Timetable: React.FC<TimetableProps> = ({
@@ -18,13 +17,9 @@ const Timetable: React.FC<TimetableProps> = ({
   location,
   icon,
   iconBackground = "#E7F4FF",
-  onTimetablePress,
 }) => {
   return (
-    <TouchableOpacity
-      style={styles.timetableContainer}
-      onPress={() => onTimetablePress}
-    >
+    <View style={styles.timetableContainer}>
       <View style={[styles.timetableIcon, { backgroundColor: iconBackground }]}>
         {icon}
       </View>
@@ -41,7 +36,7 @@ const Timetable: React.FC<TimetableProps> = ({
       </View>
 
       <AntDesign name="right" size={24} color="#002266" />
-    </TouchableOpacity>
+    </View>
   );
 };
 
