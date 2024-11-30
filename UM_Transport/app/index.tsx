@@ -21,7 +21,7 @@ export default function Index() {
         <Text className="text-white">Sapu</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        className="bg-blue-500 p-2 rounded-2xl flex-nowrap"
+        className="bg-blue-500 p-2 rounded-2xl flex-nowrap mb-10"
         onPress={() => {
           router.push("/pages/searchRoute/searchRoutePage");
         }}

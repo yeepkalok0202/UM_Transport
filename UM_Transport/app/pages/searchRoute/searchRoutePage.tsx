@@ -40,11 +40,22 @@ export default function SearchRoutePage() {
     },
   ];
 
-  const INITIAL_REGION = {
+  const fsktm = {
     latitude: 3.12834,
     longitude: 101.65099,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
+  };
+
+  const bus1 = {
+    latitude: 3.132334,
+    longitude: 101.659369,
+    direction: 320,
+  };
+
+  const INITIAL_REGION = {
+    latitude: 3.12848,
+    longitude: 101.654742,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
   };
 
   // Filter routes and buses based on search query

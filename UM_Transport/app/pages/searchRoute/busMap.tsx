@@ -12,10 +12,10 @@ const BusMap = () => {
   const [mapReady, setMapReady] = useState(false);
 
   const INITIAL_REGION = {
-    latitude: 4.863355045799683,
-    longitude: 101.88235187750773,
-    latitudeDelta: 6,
-    longitudeDelta: 6,
+    latitude: 3.12834,
+    longitude: 101.65099,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
   };
 
   const FSKTM_LOCATION = {
@@ -24,6 +24,28 @@ const BusMap = () => {
     latitudeDelta: 0.005,
     longitudeDelta: 0.005,
   };
+  const um = {
+    latitude: 3.12848,
+    longitude: 101.654742,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  };
+  const bus = [
+    {
+      title: "T815",
+      latitude: 3.132334,
+      longitude: 101.659369,
+      direction: 320,
+    },
+    { title: "T815", latitude: 3.123022, longitude: 101.65133, direction: 130 },
+    {
+      title: "UM Bus AB",
+      latitude: 3.130582,
+      longitude: 101.652225,
+      direction: 250,
+    },
+  ];
+  
 
   // Effect to animate the camera to a specific location once the map is ready
   useEffect(() => {
