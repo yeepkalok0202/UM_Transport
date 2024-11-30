@@ -44,7 +44,7 @@ const BusMap = () => {
       longitude: 101.652225,
       direction: 250,
     },
-  ];s
+  ];
   
 
   // Effect to animate the camera to a specific location once the map is ready
