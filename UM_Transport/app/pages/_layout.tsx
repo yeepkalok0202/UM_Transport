@@ -6,7 +6,7 @@ export default function Layout() {
       <Stack.Screen name="sapu" />
       <Stack.Screen name="searchRoute" />
       <Stack.Screen name="suggestion" />
-      <Stack.Screen name="busTracking" />
+      <Stack.Screen name="BusTracking" />
       <Stack.Screen name="GFTSRealtimeExample" />
     </Stack>
   );
