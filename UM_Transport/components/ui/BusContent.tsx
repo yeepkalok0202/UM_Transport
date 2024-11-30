@@ -134,6 +134,15 @@ const BusContent: React.FC<BusContentProps> = ({
 
   return (
     <BottomSheetView style={styles.contentContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          setActiveContent("suggestion");
+        }}
+      >
+        <Text style={{ color: "#007AFF", fontSize: 18, fontWeight: "500" }}>
+          {"<"} Back
+        </Text>
+      </TouchableOpacity>
       <View style={[styles.rowContainer, { justifyContent: "space-between" }]}>
         <View style={{ flexDirection: "row" }}>
           <Icon source="bus" size={40} color="#5686E1" />

@@ -138,6 +138,7 @@ const SuggestionContent: React.FC<SuggestionContentProps> = ({
             padding: 16,
             backgroundColor: "white",
             borderRadius: 12,
+            marginBottom: 16,
           }}
         >
           <View
