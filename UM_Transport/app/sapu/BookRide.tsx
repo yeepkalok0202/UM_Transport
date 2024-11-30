@@ -247,7 +247,10 @@ export default function BookRideScreen() {
             <DriverDetails
               startLocation={startLocation}
               destinationLocation={destinationLocation}
-              fareAmount={`RM${fare}`}
+              fareAmount={`RM ${fare.toLocaleString("en-MY", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`}
               timeEstimate={5}
               paymentMethod="Siswacard"
               driverName="Muhammad Ali bin Jamun"
