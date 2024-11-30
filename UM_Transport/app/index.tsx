@@ -17,7 +17,6 @@ import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import Timetable from "@/components/home/Timetable";
 import RideCard from "@/components/home/RideCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SafeView from "@/components/common/SafeView";
 
 const timetableData = [
   {
@@ -72,7 +71,7 @@ const transportChoice = [
     name: "Travel Suggestion",
     cardColor: "#E9F3FF",
     image: require("@/assets/images/Home-TravelSuggestion.png"),
-    long: false, 
+    long: false,
     route: () => {
       router.push("/suggestion");
     },
@@ -93,7 +92,7 @@ export default function Index() {
   const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
-    <SafeView>
+    <SafeAreaView edges={["top", "left", "right"]} className="h-full">
       <ScrollView style={styles.container}>
         {/* Today Timetable  */}
         <View>
@@ -159,7 +158,6 @@ export default function Index() {
                       fontWeight: "bold",
                       zIndex: 1,
                       textAlign: "center",
-
                     }}
                   >
                     {item.name}
@@ -169,7 +167,7 @@ export default function Index() {
                     source={item.image}
                     style={{
                       width: item.long ? 100 : 80,
-                      height: item.long? 40: 50,
+                      height: item.long ? 40 : 50,
                       position: "absolute",
                       right: 0,
                       bottom: 0,
@@ -231,7 +229,7 @@ export default function Index() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </SafeView>
+    </SafeAreaView>
   );
 }
 
