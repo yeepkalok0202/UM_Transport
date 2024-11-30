@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-
+import React from "react";
 import "../global.css";
 import "nativewind";
 
@@ -8,7 +8,7 @@ export default function Index() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/pages/sapu/sapu_home");
+    router.push("/pages/sapu/SapuHome");
   };
 
   return (

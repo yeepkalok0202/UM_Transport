@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 
@@ -17,67 +18,42 @@ const LocationDetails: React.FC<LocationDetailsProps> = ({
   destinationLocation,
 }) => {
   return (
-    <View style={{ flexDirection: "row" }}>
-      <View
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Image
-          source={require("@/assets/icons/start_point_icon.png")}
-          style={styles.icon}
-        />
-        <View>
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
+    <View>
+      <View className="flex-row gap-4 items-center">
+        <Ionicons name="caret-down-circle" size={24} color={"#4285F4"} />
+        <View className="flex-1">
+          <Text numberOfLines={1} className="font-bold text-[16px] text-black">
+            {startLocation.name}
+          </Text>
+          <Text numberOfLines={1} className="text-[14px] text-gray-500">
+            {startLocation.address}
+          </Text>
         </View>
-        <Image
-          source={require("@/assets/icons/end_point_icon.png")}
-          style={styles.icon}
-        />
       </View>
-      <View style={{ marginLeft: 8, paddingRight: 16 }}>
-        <Text style={styles.locationName}>{startLocation.name}</Text>
-        <Text style={styles.locationAddress}>
-          {startLocation.address + "\n"}
-        </Text>
-        <Text style={styles.locationName}>{destinationLocation.name}</Text>
-        <Text style={styles.locationAddress}>
-          {destinationLocation.address}
-        </Text>
+
+      <View className="w-[24] items-center">
+        <View style={styles.dot} />
+        <View style={styles.dot} />
+        <View style={styles.dot} />
+        <View style={styles.dot} />
+      </View>
+
+      <View className="flex-row gap-4 items-center">
+        <Ionicons name="location-sharp" size={24} color={"#E95F5F"} />
+        <View className="flex-1">
+          <Text numberOfLines={1} className="font-bold text-[16px] text-black">
+            {destinationLocation.name}
+          </Text>
+          <Text numberOfLines={1} className="text-[14px] text-gray-500">
+            {destinationLocation.address}
+          </Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  locationTextContainer: {
-    padding: 1,
-  },
-  locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  destinationLocationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  icon: {
-    width: 25,
-    height: 25,
-  },
-  locationName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333333",
-  },
-  locationAddress: {
-    fontSize: 14,
-    color: "#666666",
-  },
   dot: {
     width: 3,
     height: 3,
