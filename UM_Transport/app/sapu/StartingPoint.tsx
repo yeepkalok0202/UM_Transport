@@ -11,8 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { useRouter } from "expo-router";
-import "nativewind";
-import "../../../global.css";
+
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { DestinationInterface } from "@/types/sapu-types";
 import {
@@ -30,7 +29,7 @@ export default function StartingPointScreen() {
   const handlePress = (item: DestinationInterface) => {
     // Navigate to sapu_home with the selected destination
     router.replace({
-      pathname: "/pages/sapu/SapuHome",
+      pathname: "/sapu",
       params: {
         pickUpPoint: JSON.stringify(item),
       },

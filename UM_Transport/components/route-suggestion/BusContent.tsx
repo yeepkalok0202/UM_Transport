@@ -2,8 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Icon } from "react-native-paper";
-import { router, useRouter } from "expo-router";
-import { getUri } from "axios";
+import { useRouter } from "expo-router";
 
 interface BusContentProps {
   bus: {
@@ -106,10 +105,12 @@ const announcementContent = [
   {
     icon: "home-flood",
     title: "Unable to pass through Jalan Universiti due to flooding",
-    newsDescription: "Heavy rain has caused flooding on Jalan Universiti. Buses will be rerouted via Jalan 12/1. This may result in an additional delay of 10-15 minutes. Thank you for your understanding.",
+    newsDescription:
+      "Heavy rain has caused flooding on Jalan Universiti. Buses will be rerouted via Jalan 12/1. This may result in an additional delay of 10-15 minutes. Thank you for your understanding.",
     color: "#5686E1",
     backgroundColor: "#E5EBF0",
-    newsURI: "https://media.freemalaysiatoday.com/wp-content/uploads/2021/12/LRT-Masjid-jamek-fb.jpg",
+    newsURI:
+      "https://media.freemalaysiatoday.com/wp-content/uploads/2021/12/LRT-Masjid-jamek-fb.jpg",
   },
 ];
 
@@ -130,7 +131,7 @@ const BusContent: React.FC<BusContentProps> = ({
   return (
     <BottomSheetView style={styles.contentContainer}>
       <TouchableOpacity
-      style={{marginLeft:10, marginBottom:10}}
+        style={{ marginLeft: 10, marginBottom: 10 }}
         onPress={() => {
           setActiveContent("suggestion");
         }}
@@ -202,7 +203,7 @@ const BusContent: React.FC<BusContentProps> = ({
           }}
           onPress={() => {
             router.push({
-              pathname: "/pages/suggestion/suggestion_news",
+              pathname: "/suggestion/SuggestionNews",
               params: announcement,
             });
           }}

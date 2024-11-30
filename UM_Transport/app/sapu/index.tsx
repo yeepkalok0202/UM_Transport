@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { useGlobalSearchParams, useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import DestinationQueryResult from "@/components/ui/sapu/DestinationQueryResult";
+import DestinationQueryResult from "@/components/sapu/DestinationQueryResult";
 import {
   DestinationInterface,
   GoogleMapLocationInterface,
@@ -25,6 +25,7 @@ import {
 import { requestLocationPermission } from "@/utils/permission-utils";
 import { ActivityIndicator } from "react-native-paper";
 import { getAsString } from "@/utils/common-utils";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SapuHomeScreen() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function SapuHomeScreen() {
   >(pickUpLocation ?? undefined);
 
   // Function to navigate to Starting Point selection page
-  const handleLocationPress = () => router.replace("/pages/sapu/StartingPoint");
+  const handleLocationPress = () => router.replace("/sapu/StartingPoint");
 
   // Function to fetch places using Google Places API
   const fetchPlaces = async (query: string) => {
@@ -118,64 +119,72 @@ export default function SapuHomeScreen() {
           <ActivityIndicator size={30} />
         </View>
       )}
-      <View className="flex-1 bg-white">
-        {/* Header Section */}
-        <View className="flex-row bg-[#4285F4] h-32 gap-5 px-5">
-          <View className="flex-row items-center flex-1 h-16 mt-4 gap-5">
-            <TouchableOpacity
-              onPress={handleLocationPress}
-              className="flex-row items-center flex-1"
+      <SafeAreaView
+        edges={["top", "left", "right"]}
+        className="flex-1 bg-[#4285F4]"
+      >
+        <View className="bg-white">
+          {/* Header Section */}
+          <View className="flex-row bg-[#4285F4] h-32 gap-5 px-5">
+            <View className="flex-row items-center flex-1 h-16 mt-4 gap-5">
+              <TouchableOpacity
+                onPress={handleLocationPress}
+                className="flex-row items-center flex-1"
+              >
+                <View className="flex-row items-center">
+                  <MaterialIcons
+                    className="mr-3"
+                    name="my-location"
+                    size={25}
+                    color={"white"}
+                  />
+                  <Text
+                    numberOfLines={1}
+                    className="text-white text-xl font-semibold flex-1"
+                  >
+                    {startPoint?.address}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <Image
+                source={require("@/assets/icons/profile.png")}
+                className="h-14 w-14 rounded-full bg-white"
+              />
+            </View>
+          </View>
+
+          {/* Search Bar */}
+          <View className="px-5 translate-y-[-30]">
+            <View
+              className={`flex-row items-center bg-white rounded-xl px-4 ${
+                Platform.OS === "ios"
+                  ? "shadow-md py-5 shadow-slate-400"
+                  : "shadow-lg py-3 shadow-black"
+              }`}
             >
-              <View className="flex-row items-center">
-                <MaterialIcons
-                  className="mr-3"
-                  name="my-location"
-                  size={25}
-                  color={"white"}
-                />
-                <Text
-                  numberOfLines={1}
-                  className="text-white text-xl font-semibold flex-1"
-                >
-                  {startPoint?.address}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <Image
-              source={require("@/assets/icons/profile.png")}
-              className="h-14 w-14 rounded-full bg-white"
-            />
+              <TextInput
+                className="flex-1 text-[16px] text-black"
+                placeholder="Your destination"
+                placeholderTextColor="#888"
+                value={searchQuery}
+                onChangeText={handleSearch}
+              />
+              <MaterialIcons name="location-on" size={24} color={"#ADAEB9"} />
+            </View>
           </View>
-        </View>
 
-        {/* Search Bar */}
-        <View className="px-5 translate-y-[-30]">
-          <View
-            className={`flex-row items-center bg-white rounded-xl px-4 ${
-              Platform.OS === "ios"
-                ? "shadow-md py-5 shadow-slate-400"
-                : "shadow-lg py-3 shadow-black"
-            }`}
-          >
-            <TextInput
-              className="flex-1 text-[16px] text-black"
-              placeholder="Your destination"
-              placeholderTextColor="#888"
-              value={searchQuery}
-              onChangeText={handleSearch}
-            />
-            <MaterialIcons name="location-on" size={24} color={"#ADAEB9"} />
-          </View>
+          {/* Destination List */}
+          <FlatList
+            contentContainerStyle={{
+              paddingBottom: 180,
+            }}
+            data={destinations}
+            renderItem={renderDestinationItem}
+            keyExtractor={(item) => item.id}
+            className="px-5 h-full bg-white"
+          />
         </View>
-
-        {/* Destination List */}
-        <FlatList
-          data={destinations}
-          renderItem={renderDestinationItem}
-          keyExtractor={(item) => item.id}
-          className="px-5"
-        />
-      </View>
+      </SafeAreaView>
     </>
   );
 }

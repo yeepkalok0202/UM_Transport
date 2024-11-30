@@ -8,7 +8,7 @@ export default function Index() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/pages/sapu/SapuHome");
+    router.push("/sapu");
   };
 
   return (
@@ -23,7 +23,7 @@ export default function Index() {
       <TouchableOpacity
         className="bg-blue-500 p-2 rounded-2xl flex-nowrap mb-10"
         onPress={() => {
-          router.push("/pages/searchRoute/searchRoutePage");
+          router.push("/search-route");
         }}
       >
         <Text className="text-white">Search route</Text>
@@ -33,7 +33,7 @@ export default function Index() {
         <Text
           className="text-white"
           onPress={() => {
-            router.push("/pages/suggestion/suggestion_home");
+            router.push("/suggestion");
           }}
         >
           Route Suggestion
@@ -44,7 +44,7 @@ export default function Index() {
         <Text
           className="text-white"
           onPress={() => {
-            router.push("/pages/busTracking/BusTracking");
+            router.push("/bus-tracking");
           }}
         >
           Bus Tracking

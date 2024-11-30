@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Keyboard, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { FontAwesome5 } from "@expo/vector-icons";
-import SearchBarView from "@/components/ui/busTracking/SearchBarView";
-import BusType from "@/components/ui/busTracking/BusType";
-import BusComing from "@/components/ui/busTracking/BusComing";
+import BusType from "@/components/bus-tracking/BusType";
+import BusComing from "@/components/bus-tracking/BusComing";
 import { BUS_TYPES } from "@/constants/bus-constant";
 import { requestLocationPermission } from "@/utils/permission-utils";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SearchBarView from "@/components/bus-tracking/SearchBarView";
 
 const busNearYou = [
   {
@@ -302,8 +303,10 @@ const BusTracking = () => {
           </Marker>
         ))}
       </MapView>
-
-      <View className="absolute left-0 right-0 top-[20] px-5">
+      <SafeAreaView
+        edges={["top", "left", "right"]}
+        className="absolute left-0 right-0 top-[20] px-5"
+      >
         {/* Search bar */}
         <SearchBarView />
 
@@ -322,9 +325,12 @@ const BusTracking = () => {
             />
           ))}
         </ScrollView>
-      </View>
+      </SafeAreaView>
 
-      <View className="absolute left-0 right-0 bottom-[40]">
+      <SafeAreaView
+        edges={["bottom", "left", "right"]}
+        className="absolute left-0 right-0 bottom-[40]"
+      >
         <FlatList
           className="overflow-visible"
           contentContainerClassName="px-5"
@@ -334,7 +340,7 @@ const BusTracking = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <BusComing {...item} />}
         />
-      </View>
+      </SafeAreaView>
     </View>
   );
 };
