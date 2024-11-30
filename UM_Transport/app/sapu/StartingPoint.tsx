@@ -20,6 +20,7 @@ import {
   getPlaceFromNameGoogleAPI,
 } from "@/api/google-map-api";
 import { requestLocationPermission } from "@/utils/permission-utils";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function StartingPointScreen() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,74 +109,82 @@ export default function StartingPointScreen() {
   );
 
   return (
-    <View className="flex-1 bg-white">
-      {/* Header Section */}
-      <View className="flex-row bg-[#4285F4] h-32 gap-5 px-5">
-        <View className="flex-row items-center flex-1 h-16 mt-4 gap-5">
-          <TouchableOpacity
-            // onPress={handleLocationPress}
-            className="flex-row items-center flex-1"
+    <SafeAreaView
+      edges={["top", "left", "right"]}
+      className="flex-1 bg-[#4285F4]"
+    >
+      <View className="flex-1 bg-white">
+        {/* Header Section */}
+        <View className="flex-row bg-[#4285F4] h-32 gap-5 px-5">
+          <View className="flex-row items-center flex-1 h-16 mt-4 gap-5">
+            <TouchableOpacity
+              // onPress={handleLocationPress}
+              className="flex-row items-center flex-1"
+            >
+              <View className="flex-row items-center">
+                <MaterialIcons
+                  className="mr-3"
+                  name="my-location"
+                  size={25}
+                  color={"white"}
+                />
+                <Text className="text-white text-xl font-bold">
+                  Set your Starting Point
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <Image
+              source={require("@/assets/icons/profile.png")}
+              className="h-14 w-14 rounded-full bg-white"
+            />
+          </View>
+        </View>
+
+        {/* Search Bar */}
+        <View className="px-5 translate-y-[-30]">
+          <View
+            className={`flex-row items-center bg-white rounded-xl px-4 ${
+              Platform.OS === "ios"
+                ? "shadow-md py-5 shadow-slate-400"
+                : "shadow-lg py-3 shadow-black"
+            }`}
           >
-            <View className="flex-row items-center">
-              <MaterialIcons
-                className="mr-3"
-                name="my-location"
-                size={25}
-                color={"white"}
-              />
-              <Text className="text-white text-xl font-bold">
-                Set your Starting Point
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <Image
-            source={require("@/assets/icons/profile.png")}
-            className="h-14 w-14 rounded-full bg-white"
-          />
+            <TextInput
+              className="flex-1 text-[16px] text-black"
+              placeholder="Your destination"
+              placeholderTextColor="#888"
+              value={searchQuery}
+              onChangeText={handleSearch}
+            />
+            <MaterialIcons name="location-on" size={24} color={"#ADAEB9"} />
+          </View>
         </View>
-      </View>
 
-      {/* Search Bar */}
-      <View className="px-5 translate-y-[-30]">
-        <View
-          className={`flex-row items-center bg-white rounded-xl px-4 ${
-            Platform.OS === "ios"
-              ? "shadow-md py-5 shadow-slate-400"
-              : "shadow-lg py-3 shadow-black"
-          }`}
+        {/* Current Location Button */}
+        <TouchableOpacity
+          onPress={fetchNearbyPlaces}
+          className="mx-6 bg-blue-100 rounded-md px-4 py-3 flex-row items-center"
         >
-          <TextInput
-            className="flex-1 text-[16px] text-black"
-            placeholder="Your destination"
-            placeholderTextColor="#888"
-            value={searchQuery}
-            onChangeText={handleSearch}
+          <Image
+            source={require("@/assets/icons/current_location_icon.png")}
+            className="h-8 w-8 mr-2"
           />
-          <MaterialIcons name="location-on" size={24} color={"#ADAEB9"} />
-        </View>
-      </View>
+          <Text className="text-black text-base font-bold ml-3">
+            Current location
+          </Text>
+        </TouchableOpacity>
 
-      {/* Current Location Button */}
-      <TouchableOpacity
-        onPress={fetchNearbyPlaces}
-        className="mx-6 bg-blue-100 rounded-md px-4 py-3 flex-row items-center"
-      >
-        <Image
-          source={require("@/assets/icons/current_location_icon.png")}
-          className="h-8 w-8 mr-2"
+        {/* Destination List */}
+        <FlatList
+          contentContainerStyle={{
+            paddingBottom: 180,
+          }}
+          data={destinations}
+          renderItem={renderDestinationItem}
+          keyExtractor={(item) => item.id}
+          className="px-5 mt-5 bg-white"
         />
-        <Text className="text-black text-base font-bold ml-3">
-          Current location
-        </Text>
-      </TouchableOpacity>
-
-      {/* Destination List */}
-      <FlatList
-        data={destinations}
-        renderItem={renderDestinationItem}
-        keyExtractor={(item) => item.id}
-        className="px-5 mt-5"
-      />
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
