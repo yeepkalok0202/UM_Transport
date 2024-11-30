@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Alert,
-  FlatList,
-  Keyboard,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, FlatList, Keyboard, ScrollView } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import * as Location from "expo-location";
 import { FontAwesome5 } from "@expo/vector-icons";
-import SearchBarView from "@/components/ui/busTracking/SearchBarView";
-import BusType from "@/components/ui/busTracking/BusType";
-import BusComing from "@/components/ui/busTracking/BusComing";
+import BusType from "@/components/bus-tracking/BusType";
+import BusComing from "@/components/bus-tracking/BusComing";
 import { BUS_TYPES } from "@/constants/bus-constant";
+import { requestLocationPermission } from "@/utils/permission-utils";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SearchBarView from "@/components/bus-tracking/SearchBarView";
 
 const busNearYou = [
   {
@@ -240,8 +234,6 @@ const mockBusLocations = [
 ];
 
 const BusTracking = () => {
-  // const busInfo = prasaranaBusInfo('rapid-bus-mrtfeeder');
-  // console.log('Bus info: ', JSON.stringify(busInfo)); // Print the bus info to the consolebusInfo);
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -264,15 +256,7 @@ const BusTracking = () => {
   // Get user location
   useEffect(() => {
     (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission Denied",
-          "Location permission is required to use this feature."
-        );
-        return;
-      }
-      const userLocation = await Location.getCurrentPositionAsync({});
+      const userLocation = await requestLocationPermission();
       const { latitude, longitude } = userLocation.coords;
       setLocation({
         latitude,
@@ -302,13 +286,7 @@ const BusTracking = () => {
         onTouchStart={handleKeyboardDismiss}
         // provider={PROVIDER_GOOGLE}
       >
-        {location && (
-          <Marker
-            coordinate={location}
-            // title="You are here"
-            // description="Your current location"
-          />
-        )}
+        {location && <Marker coordinate={location} />}
 
         {filteredBusLocations.map((bus) => (
           <Marker
@@ -325,8 +303,10 @@ const BusTracking = () => {
           </Marker>
         ))}
       </MapView>
-
-      <View className="absolute left-0 right-0 top-[20] px-5 ">
+      <SafeAreaView
+        edges={["top", "left", "right"]}
+        className="absolute left-0 right-0 top-[20] px-5"
+      >
         {/* Search bar */}
         <SearchBarView />
 
@@ -345,18 +325,22 @@ const BusTracking = () => {
             />
           ))}
         </ScrollView>
-      </View>
+      </SafeAreaView>
 
-      <View className="absolute left-0 right-0 bottom-[40]">
+      <SafeAreaView
+        edges={["bottom", "left", "right"]}
+        className="absolute left-0 right-0 bottom-[40]"
+      >
         <FlatList
-          className="px-5"
+          className="overflow-visible"
+          contentContainerClassName="px-5"
           horizontal
           showsHorizontalScrollIndicator={false}
           data={busNearYou}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <BusComing {...item} />}
         />
-      </View>
+      </SafeAreaView>
     </View>
   );
 };

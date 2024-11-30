@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import LocationDetails from "../ui/sapu/LocationDetails";
+import LocationDetails from "./LocationDetails";
 import { LocationDetailsInterface } from "@/types/sapu-types";
 import { FontAwesome5 } from "@expo/vector-icons";
 

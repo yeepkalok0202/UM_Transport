@@ -1,11 +1,10 @@
+import { GOOGLE_MAPS_API_KEY } from "@/constants/environment-constant";
 import {
   DestinationInterface,
   GoogleMapLocationInterface,
   GoogleMapNearByLocationInterface,
   Location,
 } from "@/types/sapu-types";
-
-const GOOGLE_MAPS_API_KEY = "AIzaSyBapQKkarYUNa-F4NAXcrWwJHJNeajYNuY";
 
 const getPlaceFromNameGoogleAPI = async (query: string) => {
   const res = await fetch(

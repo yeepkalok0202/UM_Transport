@@ -1,5 +1,5 @@
 import { USER_API_URL } from "@/constants/api-uri-constant";
-import { ProfileInterface, ProfileUpdatableFields } from "@/types/interfaces/user-types";
+import { ProfileInterface, ProfileUpdatableFields } from "@/types/user-types";
 import { handleError } from "@/utils/api-utils";
 
 export const getUserProfileAPI = async (

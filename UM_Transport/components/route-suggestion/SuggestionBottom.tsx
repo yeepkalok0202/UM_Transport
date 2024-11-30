@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import BottomSheet, { BottomSheetModal } from "@gorhom/bottom-sheet";
-import SuggestionContent from "./SuggestionContent";
 import BusContent from "./BusContent";
+import SuggestionContent from "./SuggestionContent";
 
 interface SuggestionsBottomProps {
   bus: {

@@ -1,4 +1,4 @@
-import { ErrorInterface } from "@/types/interfaces/common-types";
+import { ErrorInterface } from "@/types/common-types";
 
 export const handleError = async (res: Response): Promise<Error> => {
   switch (res.status) {

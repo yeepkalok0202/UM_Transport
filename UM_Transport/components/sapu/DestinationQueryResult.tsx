@@ -34,7 +34,7 @@ const DestinationQueryResult = ({ item, startPoint, setIsLoading }: Props) => {
       const res = await createPreOrderAPI(reqPayload, ACCESS_TOKEN);
 
       router.push({
-        pathname: "/pages/sapu/BookRide",
+        pathname: "/sapu/BookRide",
         params: {
           startPoint: startPoint.name,
           startAddress: startPoint.address,

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import polyline from "@mapbox/polyline";
-import FareDetails from "@/components/ui/sapu/FareDetails";
-import DriverDetails from "@/components/ui/sapu/DriverDetails";
-import ArrivalDetails from "@/components/ui/sapu/ArrivalDetails";
+import FareDetails from "@/components/sapu/FareDetails";
+import DriverDetails from "@/components/sapu/DriverDetails";
+import ArrivalDetails from "@/components/sapu/ArrivalDetails";
 import { Location } from "@/types/sapu-types";
 import CustomHeader from "@/components/common/CustomHeader";
 import useBookRideScreenParam from "@/hooks/useBookRideScreenParam";
@@ -247,7 +247,10 @@ export default function BookRideScreen() {
             <DriverDetails
               startLocation={startLocation}
               destinationLocation={destinationLocation}
-              fareAmount={`RM${fare}`}
+              fareAmount={`RM ${fare.toLocaleString("en-MY", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}`}
               timeEstimate={5}
               paymentMethod="Siswacard"
               driverName="Muhammad Ali bin Jamun"
