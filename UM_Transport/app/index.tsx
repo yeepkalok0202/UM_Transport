@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import {
   Text,
   View,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
@@ -13,10 +13,10 @@ import { router, useRouter } from "expo-router";
 import React from "react";
 import "../global.css";
 import "nativewind";
-import SafeView from "@/components/ui/SafeView";
 import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import Timetable from "@/components/ui/home/Timetable";
-import RideCard from "@/components/ui/home/RideCard";
+import Timetable from "@/components/home/Timetable";
+import RideCard from "@/components/home/RideCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const timetableData = [
   {
@@ -52,7 +52,7 @@ const transportChoice = [
     cardColor: "#FCF1FE",
     image: require("@/assets/images/Home-Bus.png"),
     route: () => {
-      router.push("/pages/busTracking/busTracking");
+      router.push("/bus-tracking");
     },
   },
   {
@@ -61,7 +61,7 @@ const transportChoice = [
     cardColor: "#FCFFEE",
     image: require("@/assets/images/Home-SAPU.png"),
     route: () => {
-      router.push("/pages/sapu/SapuHome");
+      router.push("/sapu");
     },
   },
   {
@@ -70,7 +70,7 @@ const transportChoice = [
     cardColor: "#E9F3FF",
     image: require("@/assets/images/Home-TravelSuggestion.png"),
     route: () => {
-      router.push("/pages/suggestion/suggestion_home");
+      router.push("/suggestion");
     },
   },
   {
@@ -79,7 +79,7 @@ const transportChoice = [
     cardColor: "#F1FFEC",
     image: require("@/assets/images/Home-Search.png"),
     route: () => {
-      router.push("/pages/searchRoute/searchRoutePage");
+      router.push("/search-route");
     },
   },
 ];
@@ -87,56 +87,35 @@ export default function Index() {
   const router = useRouter();
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  const handlePress = () => {
-    router.push("/sapu");
-  };
-
   return (
-    <SafeView>
+    <SafeAreaView edges={["top", "left", "right"]} className="h-full">
       <ScrollView style={styles.container}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <FontAwesome6 name="location-dot" size={18} color="#8B8B8B" />
-            <Text style={styles.locationText} numberOfLines={1}>
-              {" "}
-              Faculty Computer Science and Technology Information
-            </Text>
-          </View>
-
-          <Image
-            source={require("@/assets/icons/profile.png")}
-            className="h-14 w-14 rounded-full bg-white"
-          />
-        </View>
-
         {/* Today Timetable  */}
         <View>
-          <Text style={styles.title}>Today's Timetable</Text>
-          <FlatList
-            data={timetableData}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => {
-                  setModalVisible(true);
-                }}
-              >
-                <Timetable {...item} />
-              </TouchableOpacity>
-            )}
-          />
+          <View className="flex-row justify-between items-center mb-4">
+            <Text style={styles.title}>Today&apos;s Timetable</Text>
+            <Image
+              source={require("@/assets/icons/profile.png")}
+              className="h-14 w-14 rounded-full bg-white"
+            />
+          </View>
+          {timetableData.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <Timetable {...item} />
+            </TouchableOpacity>
+          ))}
         </View>
 
         {/* Transport Choice  */}
         <View style={{ marginTop: 20 }}>
-          <Text style={styles.title}>Transport Choice</Text>
+          <Text className="mb-4" style={styles.title}>
+            Transport Choice
+          </Text>
           <View
             style={{
               flexDirection: "row",
@@ -151,6 +130,7 @@ export default function Index() {
                 onPress={item.route}
               >
                 <View
+                  className={`shadow-sm`}
                   style={{
                     width: "100%",
                     height: 110,
@@ -165,19 +145,11 @@ export default function Index() {
                       fontSize: 18,
                       color: "#002266",
                       fontWeight: "bold",
-                      position: "absolute",
-                      top: 15,
                       zIndex: 1,
-                      left: 10,
                     }}
                   >
                     {item.name}
                   </Text>
-
-                  <Image
-                    source={item.image}
-                    style={{ position: "absolute", borderRadius: 20 }}
-                  />
                 </View>
               </TouchableOpacity>
             ))}
@@ -186,7 +158,9 @@ export default function Index() {
 
         {/* Ride Card  */}
         <View style={{ marginTop: 20, marginBottom: 120 }}>
-          <Text style={styles.title}>This Week Ride</Text>
+          <Text className="mb-4" style={styles.title}>
+            This Week Ride
+          </Text>
           <RideCard />
         </View>
       </ScrollView>
@@ -200,7 +174,10 @@ export default function Index() {
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalOverlay}>
-            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+            <TouchableWithoutFeedback
+              className="mb-4"
+              onPress={(e) => e.stopPropagation()}
+            >
               <View style={styles.modalContent}>
                 <Text style={[styles.title, { textAlign: "center" }]}>
                   {" "}
@@ -210,7 +187,7 @@ export default function Index() {
                 <TouchableOpacity
                   onPress={() => {
                     setModalVisible(false);
-                    router.push("/pages/busTracking/busTracking");
+                    router.push("/bus-tracking");
                   }}
                 >
                   <PublicTransport />
@@ -219,7 +196,7 @@ export default function Index() {
                 <TouchableOpacity
                   onPress={() => {
                     setModalVisible(false);
-                    router.push("/pages/sapu/SapuHome");
+                    router.push("/sapu");
                   }}
                 >
                   <RideHailing />
@@ -229,46 +206,7 @@ export default function Index() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-    </SafeView>
-    // <View className="flex-1">
-    //   <Text>Edit app/index.tsx to edit this screen.</Text>
-    //   <TouchableOpacity
-    //     className="bg-blue-500 p-2 rounded-2xl flex-nowrap mb-10"
-    //     onPress={handlePress}
-    //   >
-    //     <Text className="text-white">Sapu</Text>
-    //   </TouchableOpacity>
-    //   <TouchableOpacity
-    //     className="bg-blue-500 p-2 rounded-2xl flex-nowrap mb-10"
-    //     onPress={() => {
-    //       router.push("/pages/searchRoute/searchRoutePage");
-    //     }}
-    //   >
-    //     <Text className="text-white">Search route</Text>
-    //   </TouchableOpacity>
-
-    //   <Pressable className="bg-blue-500 p-2 rounded-2xl flex-nowrap mt-10">
-    //     <Text
-    //       className="text-white"
-    //       onPress={() => {
-    //         router.push("/pages/suggestion/suggestion_home");
-    //       }}
-    //     >
-    //       Route Suggestion
-    //     </Text>
-    //   </Pressable>
-
-    //   <Pressable className="bg-blue-500 p-2 rounded-2xl flex-nowrap mt-10">
-    //     <Text
-    //       className="text-white"
-    //       onPress={() => {
-    //         router.push("/pages/busTracking/BusTracking");
-    //       }}
-    //     >
-    //       Bus Tracking
-    //     </Text>
-    //   </Pressable>
-    // </View>
+    </SafeAreaView>
   );
 }
 
@@ -359,7 +297,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#002266",
-    marginBottom: 10,
   },
   modalOverlay: {
     flex: 1,

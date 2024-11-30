@@ -9,7 +9,7 @@ export default function RootLayout() {
         <Stack.Screen
           name="index"
           options={{
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen name="bus-tracking/index" />

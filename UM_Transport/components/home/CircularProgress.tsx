@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, G, Line, Text as SvgText } from 'react-native-svg';
-import { Text } from 'react-native-paper';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import Svg, { Circle, G, Line, Text as SvgText } from "react-native-svg";
+import { Text } from "react-native-paper";
 
 const CircularProgress = ({ progress }: { progress: number }) => {
   const size = 120;
@@ -33,14 +33,14 @@ const CircularProgress = ({ progress }: { progress: number }) => {
   const uncompletedMidY = radius * Math.sin(uncompletedMidRad) + size / 2; // Position uncompleted text
 
   return (
-    <View>
+    <View className="items-center">
       <Svg height={size} width={size} viewBox={`0 0 ${size} ${size}`}>
         {/* Background Circle */}
         <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={'#FF9C2F'}
+          stroke={"#FF9C2F"}
           strokeWidth={strokeWidth}
           fill="transparent"
         />
@@ -61,7 +61,7 @@ const CircularProgress = ({ progress }: { progress: number }) => {
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke={'#002266'}
+          stroke={"#002266"}
           strokeWidth={strokeWidth}
           fill="transparent"
           strokeDasharray={circumference}
@@ -90,7 +90,8 @@ const CircularProgress = ({ progress }: { progress: number }) => {
               textAnchor="middle"
               fill="white"
               fontSize="8"
-              fontWeight="bold">
+              fontWeight="bold"
+            >
               {`${Math.round(progress * 100)}%`}
             </SvgText>
           </G>
@@ -104,7 +105,8 @@ const CircularProgress = ({ progress }: { progress: number }) => {
               fill="white"
               fontSize="8"
               fontWeight="bold"
-              dy="2">
+              dy="2"
+            >
               {`${Math.round((1 - progress) * 100)}%`}
             </SvgText>
           </G>
@@ -115,46 +117,43 @@ const CircularProgress = ({ progress }: { progress: number }) => {
           x={size / 2}
           y={size / 2}
           textAnchor="middle"
-          fill={'#002266'}
+          fill={"#002266"}
           fontSize="10"
-          dy="-15">
-            reduce 
+          dy="-15"
+        >
+          reduce
         </SvgText>
         <SvgText
           x={size / 2}
           y={size / 2}
           textAnchor="middle"
-          fill={'#002266'}
+          fill={"#002266"}
           fontSize="20"
-          dy="8">
-            20% 
+          dy="8"
+        >
+          20%
         </SvgText>
         <SvgText
           x={size / 2}
           y={size / 2}
           textAnchor="middle"
-          fill={'#002266'}
+          fill={"#002266"}
           fontSize="8"
-          dy="18">
-            carbon footprint 
+          dy="18"
+        >
+          carbon footprint
         </SvgText>
       </Svg>
-      <View style={[styles.legendContainer, {marginTop: 10}]}>
+      <View style={[styles.legendContainer, { marginTop: 10 }]}>
         <View style={styles.legendItem}>
           <View
-            style={[
-              styles.colorIndicator,
-              { backgroundColor: '#FF9C2F' },
-            ]}
+            style={[styles.colorIndicator, { backgroundColor: "#FF9C2F" }]}
           />
           <Text style={styles.text}>Public Transport</Text>
         </View>
         <View style={styles.legendItem}>
           <View
-            style={[
-              styles.colorIndicator,
-              { backgroundColor: '#002266' },
-            ]}
+            style={[styles.colorIndicator, { backgroundColor: "#002266" }]}
           />
           <Text style={styles.text}>Ride Hailing</Text>
         </View>
@@ -165,13 +164,13 @@ const CircularProgress = ({ progress }: { progress: number }) => {
 
 const styles = StyleSheet.create({
   legendContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    flexDirection: "row",
+    justifyContent: "flex-start",
     marginTop: 4,
   },
   legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 8,
     paddingRight: 10,
   },
